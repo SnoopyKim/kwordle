@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:kwordle/counter.dart';
 import 'package:provider/provider.dart';
@@ -26,13 +28,18 @@ class Example extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    log('build!');
     return Scaffold(
         appBar: AppBar(title: Text('Provider Example')),
         body: Center(
-          child: ElevatedButton(
-            child: Text('현재 숫자: ${context.watch<Counter>().count}'),
-            onPressed: () {
-              context.read<Counter>().increment();
+          child: Consumer<Counter>(
+            builder: (context, counter, child) {
+              return ElevatedButton(
+                child: Text('현재 숫자: ${counter.count}'),
+                onPressed: () {
+                  counter.increment();
+                },
+              );
             },
           ),
         ));
