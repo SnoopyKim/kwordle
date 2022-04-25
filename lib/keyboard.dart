@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:kwordle/keyboard_provider.dart';
+import 'package:kwordle/letter_view.dart';
 import 'package:provider/provider.dart';
 
 class KeyboardPage extends StatelessWidget {
@@ -10,9 +11,19 @@ class KeyboardPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(title: Text('KeyboardPage')),
-      body: ChangeNotifierProvider(
-          create: (_) => KeyboardProvider(), child: Center(child: _KeyboardView())),
+      body: SafeArea(
+        child: ChangeNotifierProvider(
+            create: (_) => KeyboardProvider(),
+            child: Column(children: [
+              const Spacer(),
+              LetterView(),
+              const Spacer(),
+              _KeyboardView(),
+              const SizedBox(height: 30.0),
+            ])),
+      ),
     );
   }
 }
@@ -24,15 +35,17 @@ class _KeyboardView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(mainAxisSize: MainAxisSize.min, children: [
-      Text(context.watch<KeyboardProvider>().keyInputs.join()),
-      SizedBox(height: 30.0),
-      ...keys.map(
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: keys.map(
         (keys) {
           return Row(
             mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.center,
-            children: keys.split('').map((key) => KeyboardButton(value: key)).toList(),
+            children: keys
+                .split('')
+                .map((key) => KeyboardButton(value: key))
+                .toList(),
           );
         },
       ).toList()
@@ -40,13 +53,15 @@ class _KeyboardView extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             ElevatedButton(
-                onPressed: () => context.read<KeyboardProvider>().erase(), child: Text('삭제')),
+                onPressed: () => context.read<KeyboardProvider>().erase(),
+                child: Text('삭제')),
             SizedBox(width: 30.0),
             ElevatedButton(
-                onPressed: () => context.read<KeyboardProvider>().confirm(), child: Text('제출'))
+                onPressed: () => context.read<KeyboardProvider>().confirm(),
+                child: Text('제출'))
           ],
         )),
-    ]);
+    );
   }
 }
 
