@@ -1,27 +1,23 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:kwordle/keyboard_provider.dart';
+import 'package:kwordle/utils.dart';
 import 'package:provider/provider.dart';
 
 class LetterView extends StatelessWidget {
-  LetterView({Key? key}) : super(key: key);
-
+  LetterView({Key? key, required this.onUpdate}) : super(key: key);
+  final Function() onUpdate;
   late KeyboardProvider _provider;
 
   @override
   Widget build(BuildContext context) {
     _provider = context.watch();
+    WidgetsBinding.instance?.addPostFrameCallback((_) => onUpdate());
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
-      children: List.generate(
-          _provider.inputHistory.length,
-          (i) => Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: List.generate(_provider.inputHistory[i].length, (j) {
-                  Map<String, dynamic> data = _provider.inputHistory[i][j];
-                  return LetterBox(
-                      letter: data['letter'], result: data['result']);
-                }),
-              ))
+      children: List.generate(_provider.inputHistory.length,
+          (i) => LetterRow(letterList: _provider.inputHistory[i]))
         ..add(LetterRow(
             letterList: _provider.keyInputs
                 .map<Map<String, dynamic>>((e) => {'letter': e})
@@ -51,18 +47,7 @@ class LetterRow extends StatelessWidget {
 
 class LetterBox extends StatelessWidget {
   LetterBox({Key? key, this.letter, this.result})
-      : bgColor = (() {
-          switch (result) {
-            case 0:
-              return Colors.blueGrey;
-            case 1:
-              return Colors.green;
-            case 2:
-              return Colors.orangeAccent;
-            default:
-              return Colors.white;
-          }
-        })(),
+      : bgColor = AppUtils.getColor(result) ?? Colors.white,
         super(key: key);
   final String? letter;
   final int? result;

@@ -22,33 +22,31 @@ class KeyboardProvider with ChangeNotifier {
     }
   }
 
-  void confirm() {
-    inputHistory.add(validateInput(keyInputs));
+  void submit() {
+    if (keyInputs.length < 6) {
+      return;
+    }
+    final result = validateInput(keyInputs);
+    inputHistory = [...inputHistory, result];
     keyInputs.clear();
     notifyListeners();
   }
 
   List<Map<String, dynamic>> validateInput(List<String> input) {
     String copyWord = word;
-    return input
-        .asMap()
-        .map((idx, letter) {
-          Map<String, dynamic> result = {'letter': letter};
-          int _idx = copyWord.indexOf(letter);
-
-          if (_idx == -1) {
-            result['result'] = 0;
-          } else if (_idx == idx) {
-            result['result'] = 1;
-            copyWord = copyWord.substring(0, _idx) +
-                'X' +
-                copyWord.substring(_idx + 1);
-          } else {
-            result['result'] = 2;
-          }
-          return MapEntry(idx, result);
-        })
-        .values
-        .toList();
+    List<Map<String, dynamic>> result =
+        input.map((v) => {'letter': v, 'result': 0}).toList();
+    for (int i = 0; i < result.length; i++) {
+      if (copyWord.indexOf(result[i]['letter']) == i) {
+        result[i]['result'] = 2;
+        copyWord = copyWord.substring(0, i) + 'X' + copyWord.substring(i + 1);
+      }
+    }
+    for (int i = 0; i < result.length; i++) {
+      if (copyWord.contains(result[i]['letter'])) {
+        result[i]['result'] = 1;
+      }
+    }
+    return result;
   }
 }
