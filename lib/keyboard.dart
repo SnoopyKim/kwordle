@@ -112,7 +112,7 @@ class _KeyboardView extends StatelessWidget {
                 width: 120,
                 height: 50,
                 child: ElevatedButton(
-                    onPressed: _provider.submit,
+                    onPressed: () => _provider.submit(context),
                     child: const Text(
                       '제출',
                       style: TextStyle(

@@ -2,11 +2,14 @@ import 'dart:developer';
 import 'dart:math' hide log;
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:kwordle/ui/dialogs/clear.dart';
 import 'package:kwordle/word_data/six.dart';
 import 'package:provider/provider.dart';
 
 class KeyboardProvider with ChangeNotifier {
-  String word = WORD_LIST_SIX[Random().nextInt(27041)];
+  int wordIndex = Random().nextInt(WORD_LIST_SIX.length);
+  String get word => WORD_LIST_SIX[wordIndex];
 
   List<List<Map<String, dynamic>>> inputHistory = [];
   List<String> keyInputs = [];
@@ -25,7 +28,7 @@ class KeyboardProvider with ChangeNotifier {
     }
   }
 
-  void submit() {
+  void submit(BuildContext context) {
     if (keyInputs.length < 6) {
       return;
     }
@@ -33,6 +36,19 @@ class KeyboardProvider with ChangeNotifier {
     final result = validateInput(keyInputs);
     inputHistory = [...inputHistory, result];
     keyInputs.clear();
+    if (result.every((e) => e['result'] == 2)) {
+      showDialog(
+          context: context,
+          builder: (context) => ClearDialog(
+              wordIndex: wordIndex,
+              count: inputHistory.length,
+              onPress: () {
+                wordIndex = Random().nextInt(WORD_LIST_SIX.length);
+                inputHistory = [];
+                notifyListeners();
+              }),
+          barrierDismissible: false);
+    }
     notifyListeners();
   }
 
