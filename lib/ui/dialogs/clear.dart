@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
 
 class ClearDialog extends StatelessWidget {
-  const ClearDialog(
-      {Key? key,
-      required this.wordIndex,
-      required this.count,
-      required this.onPress})
+  const ClearDialog({Key? key, required this.wordIndex, required this.count, required this.onPress})
       : super(key: key);
   final String mode = 'six';
   final int wordIndex;
@@ -15,7 +11,7 @@ class ClearDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text('성공!'),
+      title: Center(child: Text('성공!')),
       content: Text('$wordIndex\n시도횟수: $count'),
       actionsAlignment: MainAxisAlignment.center,
       actions: [

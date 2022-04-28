@@ -54,8 +54,7 @@ class KeyboardProvider with ChangeNotifier {
 
   List<Map<String, dynamic>> validateInput(List<String> input) {
     String copyWord = word;
-    List<Map<String, dynamic>> result =
-        input.map((v) => {'letter': v, 'result': 0}).toList();
+    List<Map<String, dynamic>> result = input.map((v) => {'letter': v, 'result': 0}).toList();
     for (int i = 0; i < result.length; i++) {
       if (copyWord.indexOf(result[i]['letter']) == i) {
         result[i]['result'] = 2;
@@ -63,7 +62,7 @@ class KeyboardProvider with ChangeNotifier {
       }
     }
     for (int i = 0; i < result.length; i++) {
-      if (copyWord.contains(result[i]['letter'])) {
+      if (copyWord.contains(result[i]['letter']) && (result[i]['result'] != 2)) {
         result[i]['result'] = 1;
       }
     }
