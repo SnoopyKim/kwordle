@@ -1,11 +1,14 @@
 import 'dart:developer';
 
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:kwordle/keyboard_provider.dart';
 import 'package:kwordle/keyboard.dart';
 import 'package:provider/provider.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(const MyApp());
 }
 
@@ -32,7 +35,9 @@ class Example extends StatelessWidget {
             child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            ElevatedButton(onPressed: () => navigate(context), child: Text('KEYBOARD PAGE'))
+            ElevatedButton(
+                onPressed: () => navigate(context),
+                child: Text('KEYBOARD PAGE'))
           ],
         )));
   }

@@ -1,4 +1,4 @@
-package com.example.kwordle
+package dev.snoopy.kwordle
 
 import io.flutter.embedding.android.FlutterActivity
 

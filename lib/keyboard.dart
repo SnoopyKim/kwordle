@@ -168,7 +168,7 @@ class _KeyboardButtonState extends State<KeyboardButton> {
                 ? HSLColor.fromColor(bgColor).withLightness(0.4).toColor()
                 : bgColor,
             borderRadius: BorderRadius.circular(5.0)),
-        width: 40,
+        width: (MediaQuery.of(context).size.width - 40 - 8 * 8) / 9,
         height: 50,
         alignment: Alignment.center,
         margin: const EdgeInsets.all(4.0),

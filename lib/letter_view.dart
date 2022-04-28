@@ -32,23 +32,26 @@ class LetterRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final boxSize = (MediaQuery.of(context).size.width - 40 - 6 * 5) / 6;
     return Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: List.generate(6, (i) {
           if (i >= letterList.length) {
-            return LetterBox();
+            return LetterBox(size: boxSize);
           } else {
             Map<String, dynamic> data = letterList[i];
-            return LetterBox(letter: data['letter'], result: data['result']);
+            return LetterBox(
+                size: boxSize, letter: data['letter'], result: data['result']);
           }
         }));
   }
 }
 
 class LetterBox extends StatelessWidget {
-  LetterBox({Key? key, this.letter, this.result})
+  LetterBox({Key? key, required this.size, this.letter, this.result})
       : bgColor = AppUtils.getColor(result) ?? Colors.white,
         super(key: key);
+  final double size;
   final String? letter;
   final int? result;
   final Color bgColor;
@@ -56,8 +59,8 @@ class LetterBox extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 60,
-      height: 60,
+      width: size,
+      height: size,
       margin: const EdgeInsets.all(3.0),
       decoration: BoxDecoration(
           color: bgColor,

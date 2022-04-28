@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "542982562892",
+    "project_id": "kwordle-25012",
+    "storage_bucket": "kwordle-25012.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:542982562892:android:063d49b7cac770dd0380e9",
+        "android_client_info": {
+          "package_name": "dev.snoopy.kwordle"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "542982562892-njakgb4m2elk63putm40qsookt6mq7vt.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD0qX2X9u3TFRRig4PScLtmmKCUrkZ7DQs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "542982562892-njakgb4m2elk63putm40qsookt6mq7vt.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

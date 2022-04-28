@@ -1,10 +1,13 @@
 import 'dart:developer';
+import 'dart:math' hide log;
 
 import 'package:flutter/cupertino.dart';
+import 'package:kwordle/word_data/six.dart';
 import 'package:provider/provider.dart';
 
 class KeyboardProvider with ChangeNotifier {
-  String word = 'ㄱㅜㅓㄴㅌㅜ';
+  String word = WORD_LIST_SIX[Random().nextInt(27041)];
+
   List<List<Map<String, dynamic>>> inputHistory = [];
   List<String> keyInputs = [];
 
@@ -26,6 +29,7 @@ class KeyboardProvider with ChangeNotifier {
     if (keyInputs.length < 6) {
       return;
     }
+    log(word);
     final result = validateInput(keyInputs);
     inputHistory = [...inputHistory, result];
     keyInputs.clear();
