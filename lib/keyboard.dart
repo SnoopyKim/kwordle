@@ -2,9 +2,10 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:kwordle/keyboard_provider.dart';
-import 'package:kwordle/letter_view.dart';
 import 'package:kwordle/utils.dart';
 import 'package:provider/provider.dart';
+
+import 'ui/letter/letter_view.dart';
 
 class KeyboardPage extends StatefulWidget {
   const KeyboardPage({Key? key}) : super(key: key);
@@ -112,7 +113,7 @@ class _KeyboardView extends StatelessWidget {
                 width: 120,
                 height: 50,
                 child: ElevatedButton(
-                    onPressed: () => _provider.submit(context),
+                    onPressed: _provider.submit,
                     child: const Text(
                       '제출',
                       style: TextStyle(

@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:developer';
 import 'dart:math' hide log;
 
@@ -14,8 +15,15 @@ class KeyboardProvider with ChangeNotifier {
   List<List<Map<String, dynamic>>> inputHistory = [];
   List<String> keyInputs = [];
 
+  bool isReadyToInput = false;
+
+  void setReadyToInput(bool value) {
+    isReadyToInput = value;
+    notifyListeners();
+  }
+
   void input(String key) {
-    if (keyInputs.length < 6) {
+    if (isReadyToInput && keyInputs.length < 6) {
       keyInputs.add(key);
       notifyListeners();
     }
@@ -28,7 +36,7 @@ class KeyboardProvider with ChangeNotifier {
     }
   }
 
-  void submit(BuildContext context) {
+  void submit() {
     if (keyInputs.length < 6) {
       return;
     }
@@ -36,25 +44,36 @@ class KeyboardProvider with ChangeNotifier {
     final result = validateInput(keyInputs);
     inputHistory = [...inputHistory, result];
     keyInputs.clear();
-    if (result.every((e) => e['result'] == 2)) {
-      showDialog(
-          context: context,
-          builder: (context) => ClearDialog(
-              wordIndex: wordIndex,
-              count: inputHistory.length,
-              onPress: () {
-                wordIndex = Random().nextInt(WORD_LIST_SIX.length);
-                inputHistory = [];
-                notifyListeners();
-              }),
-          barrierDismissible: false);
-    }
+    isReadyToInput = false;
+    notifyListeners();
+  }
+
+  void checkClear(BuildContext context, VoidCallback callback) {
+    final isClear = inputHistory.last.every((e) => e['result'] == 2);
+    Timer(
+        const Duration(milliseconds: 1400),
+        () => isClear
+            ? showDialog(
+                context: context,
+                builder: (context) => ClearDialog(
+                    wordIndex: wordIndex,
+                    count: inputHistory.length,
+                    onPress: restart))
+            : isReadyToInput = true);
+  }
+
+  void restart() {
+    wordIndex = Random().nextInt(WORD_LIST_SIX.length);
+    inputHistory = [];
+    keyInputs = [];
+    isReadyToInput = false;
     notifyListeners();
   }
 
   List<Map<String, dynamic>> validateInput(List<String> input) {
     String copyWord = word;
-    List<Map<String, dynamic>> result = input.map((v) => {'letter': v, 'result': 0}).toList();
+    List<Map<String, dynamic>> result =
+        input.map((v) => {'letter': v, 'result': 0}).toList();
     for (int i = 0; i < result.length; i++) {
       if (copyWord.indexOf(result[i]['letter']) == i) {
         result[i]['result'] = 2;
@@ -62,7 +81,8 @@ class KeyboardProvider with ChangeNotifier {
       }
     }
     for (int i = 0; i < result.length; i++) {
-      if (copyWord.contains(result[i]['letter']) && (result[i]['result'] != 2)) {
+      if (copyWord.contains(result[i]['letter']) &&
+          (result[i]['result'] != 2)) {
         result[i]['result'] = 1;
       }
     }
