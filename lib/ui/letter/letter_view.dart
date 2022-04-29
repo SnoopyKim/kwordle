@@ -2,15 +2,14 @@ import 'dart:async';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:kwordle/keyboard_provider.dart';
-import 'package:kwordle/utils.dart';
+import 'package:kwordle/providers/keyboard_provider.dart';
+import 'package:kwordle/utils/theme_utils.dart';
 import 'package:provider/provider.dart';
 
 import 'letter_box.dart';
 
 class LetterView extends StatelessWidget {
-  LetterView({Key? key, required this.onUpdate}) : super(key: key);
-  final Function() onUpdate;
+  LetterView({Key? key}) : super(key: key);
 
   late KeyboardProvider _provider;
 
@@ -21,8 +20,6 @@ class LetterView extends StatelessWidget {
       if (_provider.inputHistory.isEmpty) {
         Timer(const Duration(milliseconds: 300),
             () => _provider.setReadyToInput(true));
-      } else {
-        _provider.checkClear(context, onUpdate);
       }
     }
     return Column(

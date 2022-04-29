@@ -5,6 +5,7 @@ import 'dart:math' hide log;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:kwordle/ui/dialogs/clear.dart';
+import 'package:kwordle/utils/game_utils.dart';
 import 'package:kwordle/word_data/six.dart';
 import 'package:provider/provider.dart';
 
@@ -36,30 +37,43 @@ class KeyboardProvider with ChangeNotifier {
     }
   }
 
-  void submit() {
+  bool checkWordExist() {
+    final inputWord = keyInputs.join('');
+    return WORD_LIST_SIX.contains(inputWord);
+  }
+
+  bool? submit() {
     if (keyInputs.length < 6) {
-      return;
+      return null;
+    }
+    if (!checkWordExist()) {
+      return false;
     }
     log(word);
-    final result = validateInput(keyInputs);
+    final result = GameUtils.validateInput(word, keyInputs);
     inputHistory = [...inputHistory, result];
     keyInputs.clear();
     isReadyToInput = false;
     notifyListeners();
+    return true;
   }
 
   void checkClear(BuildContext context, VoidCallback callback) {
     final isClear = inputHistory.last.every((e) => e['result'] == 2);
-    Timer(
-        const Duration(milliseconds: 1400),
-        () => isClear
-            ? showDialog(
-                context: context,
-                builder: (context) => ClearDialog(
-                    wordIndex: wordIndex,
-                    count: inputHistory.length,
-                    onPress: restart))
-            : isReadyToInput = true);
+    Timer(const Duration(milliseconds: 1400), () {
+      if (isClear) {
+        showDialog(
+            context: context,
+            builder: (context) => ClearDialog(
+                wordIndex: wordIndex,
+                count: inputHistory.length,
+                onPress: restart));
+      } else {
+        isReadyToInput = true;
+        callback();
+        notifyListeners();
+      }
+    });
   }
 
   void restart() {
@@ -68,24 +82,5 @@ class KeyboardProvider with ChangeNotifier {
     keyInputs = [];
     isReadyToInput = false;
     notifyListeners();
-  }
-
-  List<Map<String, dynamic>> validateInput(List<String> input) {
-    String copyWord = word;
-    List<Map<String, dynamic>> result =
-        input.map((v) => {'letter': v, 'result': 0}).toList();
-    for (int i = 0; i < result.length; i++) {
-      if (copyWord.indexOf(result[i]['letter']) == i) {
-        result[i]['result'] = 2;
-        copyWord = copyWord.substring(0, i) + 'X' + copyWord.substring(i + 1);
-      }
-    }
-    for (int i = 0; i < result.length; i++) {
-      if (copyWord.contains(result[i]['letter']) &&
-          (result[i]['result'] != 2)) {
-        result[i]['result'] = 1;
-      }
-    }
-    return result;
   }
 }

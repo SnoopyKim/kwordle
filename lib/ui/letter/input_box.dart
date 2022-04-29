@@ -50,7 +50,9 @@ class _InputBoxState extends State<InputBox>
           color: Colors.white,
           borderRadius: BorderRadius.circular(5.0),
           border: Border.all(
-              color: widget.letter != null ? Colors.black : Color(0xFFCCCCCC),
+              color: widget.letter != null
+                  ? Colors.black
+                  : const Color(0xFFCCCCCC),
               width: 2.0),
         ),
         alignment: Alignment.center,

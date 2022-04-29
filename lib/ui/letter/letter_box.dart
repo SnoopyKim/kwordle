@@ -4,7 +4,7 @@ import 'dart:math' hide log;
 
 import 'package:flutter/material.dart';
 import 'package:kwordle/ui/letter/input_box.dart';
-import 'package:kwordle/utils.dart';
+import 'package:kwordle/utils/theme_utils.dart';
 
 class LetterBox extends StatefulWidget {
   LetterBox(
@@ -13,7 +13,7 @@ class LetterBox extends StatefulWidget {
       required this.size,
       this.letter,
       this.result})
-      : bgColor = AppUtils.getColor(result) ?? Colors.white,
+      : bgColor = ThemeUtils.getColor(result) ?? Colors.white,
         super(key: key);
   final int index;
   final double size;
@@ -40,15 +40,6 @@ class _LetterBoxState extends State<LetterBox> {
       );
     }
   }
-
-  // @override
-  // void didUpdateWidget(covariant LetterBox oldWidget) {
-  //   super.didUpdateWidget(oldWidget);
-  //   log('didUpdateWidget ${widget.result} ${oldWidget.result}');
-  //   if (widget.result != null && oldWidget.result == null) {
-
-  //   }
-  // }
 
   @override
   Widget build(BuildContext context) {
