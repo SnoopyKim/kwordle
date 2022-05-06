@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:kwordle/providers/keyboard_provider.dart';
+import 'package:kwordle/providers/game_provider.dart';
 import 'package:kwordle/utils/theme_utils.dart';
 import 'package:provider/provider.dart';
 
 class KeyboardButton extends StatefulWidget {
-  const KeyboardButton({Key? key, required this.value, this.result})
-      : super(key: key);
+  const KeyboardButton({Key? key, required this.value, this.result}) : super(key: key);
 
   final String value;
   final int? result;
@@ -24,7 +23,7 @@ class _KeyboardButtonState extends State<KeyboardButton> {
   Widget build(BuildContext context) {
     final bgColor = ThemeUtils.getColor(widget.result) ?? Colors.grey.shade200;
     final void Function(String) onPressKey =
-        context.select((KeyboardProvider provider) => provider.input);
+        context.select((GameProvider provider) => provider.input);
     return GestureDetector(
       onTapDown: (_) {
         setTapDown(true);
@@ -38,9 +37,7 @@ class _KeyboardButtonState extends State<KeyboardButton> {
       },
       child: Container(
         decoration: BoxDecoration(
-            color: isTapDown
-                ? HSLColor.fromColor(bgColor).withLightness(0.4).toColor()
-                : bgColor,
+            color: isTapDown ? HSLColor.fromColor(bgColor).withLightness(0.4).toColor() : bgColor,
             borderRadius: BorderRadius.circular(5.0)),
         width: (MediaQuery.of(context).size.width - 40 - 8 * 8) / 9,
         height: 50,
@@ -49,8 +46,7 @@ class _KeyboardButtonState extends State<KeyboardButton> {
         child: Text(
           widget.value,
           style: TextStyle(
-              color: widget.result != null ? Colors.white : null,
-              fontWeight: FontWeight.bold),
+              color: widget.result != null ? Colors.white : null, fontWeight: FontWeight.bold),
         ),
       ),
     );

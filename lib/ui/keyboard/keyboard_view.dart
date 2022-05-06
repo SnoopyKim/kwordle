@@ -2,7 +2,6 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:kwordle/providers/game_provider.dart';
-import 'package:kwordle/providers/keyboard_provider.dart';
 import 'package:kwordle/utils/game_utils.dart';
 import 'package:provider/provider.dart';
 
@@ -16,11 +15,9 @@ class KeyboardView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<List<Map<String, dynamic>>> history =
-        context.select((KeyboardProvider p) {
+    List<List<Map<String, dynamic>>> history = context.select((GameProvider p) {
       return p.inputHistory;
     });
-    KeyboardProvider _keyboardprovider = context.read();
     GameProvider _gameProvider = context.read();
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -30,9 +27,8 @@ class KeyboardView extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.center,
             children: keys.split('').map((key) {
-              final result = GameUtils.mergeHistory(history).firstWhere(
-                  (l) => l['letter'] == key,
-                  orElse: () => {})['result'];
+              final result = GameUtils.mergeHistory(history)
+                  .firstWhere((l) => l['letter'] == key, orElse: () => {})['result'];
               return KeyboardButton(
                 value: key,
                 result: result,
@@ -50,7 +46,7 @@ class KeyboardView extends StatelessWidget {
                 width: 120,
                 height: 50,
                 child: ElevatedButton(
-                    onPressed: _keyboardprovider.erase,
+                    onPressed: _gameProvider.erase,
                     child: const Text(
                       '삭제',
                       style: TextStyle(
@@ -66,11 +62,11 @@ class KeyboardView extends StatelessWidget {
                 child: ElevatedButton(
                     onPressed: () {
                       double height = MediaQuery.of(context).size.height;
-                      final submitResult = _keyboardprovider.submit();
+                      final submitResult = _gameProvider.submit();
                       if (submitResult == false) {
                         _gameProvider.showToast();
                       } else if (submitResult == true) {
-                        _keyboardprovider.checkClear(context, onUpdate);
+                        _gameProvider.checkClear(context, onUpdate);
                       }
                     },
                     child: const Text(

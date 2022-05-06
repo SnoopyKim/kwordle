@@ -2,14 +2,15 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:kwordle/providers/game_provider.dart';
-import 'package:kwordle/providers/keyboard_provider.dart';
 import 'package:kwordle/ui/keyboard/keyboard_view.dart';
 import 'package:provider/provider.dart';
 
 import '../letter/letter_view.dart';
 
 class GameScreen extends StatefulWidget {
-  const GameScreen({Key? key}) : super(key: key);
+  const GameScreen({Key? key, required this.mode}) : super(key: key);
+
+  final int mode;
 
   @override
   State<GameScreen> createState() => _GameScreenState();
@@ -39,9 +40,8 @@ class _GameScreenState extends State<GameScreen> {
         child: MultiProvider(
           providers: [
             ChangeNotifierProvider(
-              create: (_) => KeyboardProvider(),
+              create: (_) => GameProvider(widget.mode),
             ),
-            ChangeNotifierProvider(create: (_) => GameProvider()),
           ],
           child: Stack(
             children: [
@@ -50,8 +50,7 @@ class _GameScreenState extends State<GameScreen> {
                     child: Padding(
                   padding: const EdgeInsets.symmetric(vertical: 20.0),
                   child: SingleChildScrollView(
-                      controller: _scrollController,
-                      child: Center(child: LetterView())),
+                      controller: _scrollController, child: Center(child: LetterView())),
                 )),
                 KeyboardView(
                     onUpdate: () => _scrollController.animateTo(
@@ -116,18 +115,13 @@ class _ToastState extends State<Toast> {
             },
             child: AnimatedContainer(
               duration: const Duration(milliseconds: 300),
-              decoration: BoxDecoration(
-                  color: Colors.red, borderRadius: BorderRadius.circular(8.0)),
+              decoration:
+                  BoxDecoration(color: Colors.red, borderRadius: BorderRadius.circular(8.0)),
               padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-              transform: isShown
-                  ? Matrix4.identity()
-                  : Matrix4.translationValues(0, -20, 0),
+              transform: isShown ? Matrix4.identity() : Matrix4.translationValues(0, -20, 0),
               child: Text(
                 '등록되지 않은 단어입니다',
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 13.0,
-                    fontWeight: FontWeight.bold),
+                style: TextStyle(color: Colors.white, fontSize: 13.0, fontWeight: FontWeight.bold),
               ),
             )));
   }

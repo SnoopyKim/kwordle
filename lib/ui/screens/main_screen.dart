@@ -12,18 +12,18 @@ class MainScreen extends StatelessWidget {
             child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            ElevatedButton(
-                onPressed: () => navigate(context),
-                child: Text('KEYBOARD PAGE'))
+            ElevatedButton(onPressed: () => navigate(context, 5), child: Text('5글자')),
+            ElevatedButton(onPressed: () => navigate(context, 6), child: Text('6글자')),
+            ElevatedButton(onPressed: () => navigate(context, 7), child: Text('7글자')),
           ],
         )));
   }
 
-  Future navigate(BuildContext context) {
+  Future navigate(BuildContext context, int mode) {
     return Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => GameScreen(),
+          builder: (context) => GameScreen(mode: mode),
         ));
   }
 }
