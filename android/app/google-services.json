@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "542982562892",
+    "firebase_url": "https://kwordle-25012-default-rtdb.asia-southeast1.firebasedatabase.app",
     "project_id": "kwordle-25012",
     "storage_bucket": "kwordle-25012.appspot.com"
   },
@@ -13,6 +14,14 @@
         }
       },
       "oauth_client": [
+        {
+          "client_id": "542982562892-o0qgv9l72t3n3e545vmdadldpnnu8ifo.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "dev.snoopy.kwordle",
+            "certificate_hash": "b9d3f74f6b9f25bac98f3868142acfa383f85d39"
+          }
+        },
         {
           "client_id": "542982562892-njakgb4m2elk63putm40qsookt6mq7vt.apps.googleusercontent.com",
           "client_type": 3
