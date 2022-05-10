@@ -86,8 +86,9 @@ class GameProvider with ChangeNotifier {
       if (isClear) {
         showDialog(
             context: context,
-            builder: (context) =>
-                ClearDialog(wordIndex: wordIndex, count: inputHistory.length, onPress: restart));
+            barrierDismissible: false,
+            builder: (context) => ClearDialog(
+                mode: mode, wordIndex: wordIndex, count: inputHistory.length, onPress: restart));
       } else {
         isReadyToInput = true;
         callback();
