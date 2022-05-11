@@ -22,9 +22,11 @@ class _SignInScreenState extends State<SignInScreen> {
       showDialog(
           context: context, builder: (_) => AuthDialog(code: resultCode));
     }
-    setState(() {
-      isBusy = false;
-    });
+    if (mounted) {
+      setState(() {
+        isBusy = false;
+      });
+    }
   }
 
   @override

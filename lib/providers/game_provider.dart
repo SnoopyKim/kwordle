@@ -16,13 +16,13 @@ class GameProvider with ChangeNotifier {
   late String word;
   GameProvider(this.mode) {
     switch (mode) {
-      case 5:
+      case GameMode.FIVE:
         WORD_POOL = WORD_LIST_FIVE;
         break;
-      case 6:
+      case GameMode.SIX:
         WORD_POOL = WORD_LIST_SIX;
         break;
-      case 7:
+      case GameMode.SEVEN:
         WORD_POOL = WORD_LIST_SEVEN;
         break;
       default:
@@ -86,8 +86,10 @@ class GameProvider with ChangeNotifier {
       if (isClear) {
         showDialog(
             context: context,
-            builder: (context) =>
-                ClearDialog(wordIndex: wordIndex, count: inputHistory.length, onPress: restart));
+            builder: (context) => ClearDialog(
+                wordIndex: wordIndex,
+                count: inputHistory.length,
+                onPress: restart));
       } else {
         isReadyToInput = true;
         callback();

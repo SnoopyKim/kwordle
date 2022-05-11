@@ -1,3 +1,9 @@
+class GameMode {
+  static const int FIVE = 5;
+  static const int SIX = 6;
+  static const int SEVEN = 7;
+}
+
 class GameUtils {
   static List<Map<String, dynamic>> mergeHistory(
       List<List<Map<String, dynamic>>> history) {
