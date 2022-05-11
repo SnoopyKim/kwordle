@@ -86,7 +86,9 @@ class GameProvider with ChangeNotifier {
       if (isClear) {
         showDialog(
             context: context,
+            barrierDismissible: false,
             builder: (context) => ClearDialog(
+                mode: mode,
                 wordIndex: wordIndex,
                 count: inputHistory.length,
                 onPress: restart));
