@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class ThemeUtils {
-  static Color? getColor(int? result) {
+  static Color? getResultColor(int? result) {
     switch (result) {
       case 0:
         return Colors.blueGrey;
@@ -11,4 +11,9 @@ class ThemeUtils {
         return Colors.orangeAccent;
     }
   }
+
+  static const Color backgroundColor = Color(0xffF8FCFF);
+  static const Color neumorphismColor = Color(0xffE5F4FE);
+  static const Color highlightColor = Color(0xff29A8F6);
+  static const Color textColor = Color(0xff0D0D3D);
 }

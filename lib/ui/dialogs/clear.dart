@@ -28,9 +28,9 @@ class _ClearDialogState extends State<ClearDialog> {
   @override
   void initState() {
     super.initState();
-    DatabaseReference wordRef = FirebaseDatabase.instance.ref(getDatabasePath());
+    DatabaseReference wordRef =
+        FirebaseDatabase.instance.ref(getDatabasePath());
     wordRef.get().then((snapshot) => setState(() {
-          log(snapshot.value.runtimeType.toString());
           data = Word.fromMap(snapshot.value as Map<dynamic, dynamic>);
         }));
   }
@@ -83,7 +83,8 @@ class _ClearDialogState extends State<ClearDialog> {
                             textAlign: TextAlign.center,
                           ),
                           Padding(
-                            padding: const EdgeInsets.only(top: 12.0, bottom: 16.0),
+                            padding:
+                                const EdgeInsets.only(top: 12.0, bottom: 16.0),
                             child: Text(
                               data!.definition,
                               style: TextStyle(color: Colors.grey.shade800),

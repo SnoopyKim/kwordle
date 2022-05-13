@@ -13,7 +13,7 @@ class LetterBox extends StatefulWidget {
       required this.size,
       this.letter,
       this.result})
-      : bgColor = ThemeUtils.getColor(result) ?? Colors.white,
+      : bgColor = ThemeUtils.getResultColor(result) ?? Colors.white,
         super(key: key);
   final int index;
   final double size;

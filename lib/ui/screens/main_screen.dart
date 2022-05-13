@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kwordle/providers/auth_provider.dart';
+import 'package:kwordle/ui/dialogs/user.dart';
 import 'package:kwordle/ui/screens/game_screen.dart';
 import 'package:kwordle/utils/game_utils.dart';
 import 'package:provider/provider.dart';
@@ -9,8 +10,20 @@ class MainScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String userUid = context.read<AuthProvider>().user?.uid ?? '';
     return Scaffold(
-        appBar: AppBar(title: Text('KWORDLE')),
+        appBar: AppBar(title: Text('KWORDLE'), actions: [
+          IconButton(
+              onPressed: () => showDialog(
+                  context: context,
+                  builder: (_) => UserDialog(uid: userUid),
+                  barrierDismissible: false),
+              splashRadius: 28.0,
+              icon: Icon(
+                Icons.person,
+                color: Colors.white,
+              ))
+        ]),
         body: Center(
             child: Column(
           mainAxisSize: MainAxisSize.min,
