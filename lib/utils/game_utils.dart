@@ -40,4 +40,17 @@ class GameUtils {
     }
     return result;
   }
+
+  static String getModeText(int mode) {
+    switch (mode) {
+      case GameMode.FIVE:
+        return '오';
+      case GameMode.SIX:
+        return '육';
+      case GameMode.SEVEN:
+        return '칠';
+      default:
+        return '';
+    }
+  }
 }

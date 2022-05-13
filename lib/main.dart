@@ -2,9 +2,11 @@ import 'dart:developer';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:kwordle/providers/auth_provider.dart';
 import 'package:kwordle/ui/screens/main_screen.dart';
 import 'package:kwordle/ui/screens/sign_in_screen.dart';
+import 'package:kwordle/utils/theme_utils.dart';
 import 'package:provider/provider.dart';
 
 Future<void> main() async {
@@ -18,9 +20,13 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return NeumorphicApp(
         debugShowCheckedModeBanner: false,
         title: 'KWORDLE',
+        theme: NeumorphicThemeData(
+          baseColor: ThemeUtils.neumorphismColor,
+          lightSource: LightSource.topLeft,
+        ),
         home: MultiProvider(
           providers: [
             ChangeNotifierProvider(create: (_) => AuthProvider()..listen())

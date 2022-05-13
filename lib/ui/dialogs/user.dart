@@ -46,47 +46,58 @@ class _UserDialogState extends State<UserDialog> {
       backgroundColor: ThemeUtils.neumorphismColor,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
       child: Container(
-        height: MediaQuery.of(context).size.height * 0.5,
+        height: MediaQuery.of(context).size.height * 0.6,
         child: Stack(
           children: [
             Padding(
               padding: const EdgeInsets.all(16.0),
-              child: AnimatedSwitcher(
-                  duration: const Duration(milliseconds: 300),
-                  child: isLoaded
-                      ? Column(
-                          children: [
-                            Padding(
-                              padding:
-                                  const EdgeInsets.only(top: 8.0, bottom: 16.0),
-                              child: Text(
-                                user!.name,
-                                style: const TextStyle(
-                                    color: ThemeUtils.textColor,
-                                    fontSize: 20.0,
-                                    fontWeight: FontWeight.bold,
-                                    letterSpacing: 2.0),
-                                textAlign: TextAlign.center,
-                              ),
-                            ),
-                            Expanded(
-                              child: Column(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
-                                children: [
-                                  _Record(
-                                      mode: GameMode.FIVE, count: user!.five),
-                                  _Record(mode: GameMode.SIX, count: user!.six),
-                                  _Record(
-                                      mode: GameMode.SEVEN, count: user!.seven),
-                                ],
-                              ),
+              child: Column(
+                children: [
+                  Expanded(
+                    child: AnimatedSwitcher(
+                      duration: const Duration(milliseconds: 300),
+                      child: isLoaded
+                          ? Column(
+                              children: [
+                                Container(
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical: 8.0, horizontal: 16.0),
+                                  margin: const EdgeInsets.only(bottom: 8.0),
+                                  child: Text(
+                                    user!.name,
+                                    style: const TextStyle(
+                                        color: ThemeUtils.titleColor,
+                                        fontSize: 20.0,
+                                        fontWeight: FontWeight.bold,
+                                        letterSpacing: 2.0),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Column(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceAround,
+                                    children: [
+                                      _Record(
+                                          mode: GameMode.FIVE,
+                                          count: user!.five),
+                                      _Record(
+                                          mode: GameMode.SIX, count: user!.six),
+                                      _Record(
+                                          mode: GameMode.SEVEN,
+                                          count: user!.seven),
+                                    ],
+                                  ),
+                                )
+                              ],
                             )
-                          ],
-                        )
-                      : const Center(
-                          child: CircularProgressIndicator(
-                              color: ThemeUtils.highlightColor))),
+                          : const Center(
+                              child: CircularProgressIndicator(
+                                  color: ThemeUtils.highlightColor)),
+                    ),
+                  ),
+                ],
+              ),
             ),
             Align(
               alignment: Alignment.topRight,
@@ -94,7 +105,7 @@ class _UserDialogState extends State<UserDialog> {
                 splashRadius: 24.0,
                 constraints: const BoxConstraints(),
                 padding: const EdgeInsets.all(16.0),
-                icon: const Icon(Icons.close, color: ThemeUtils.textColor),
+                icon: const Icon(Icons.close, color: ThemeUtils.titleColor),
                 onPressed: () => Navigator.of(context).pop(),
               ),
             ),
@@ -170,12 +181,12 @@ class _Record extends StatelessWidget {
             children: [
               Text(
                 '시도횟수 : $count회',
-                style: const TextStyle(color: ThemeUtils.textColor),
+                style: const TextStyle(color: ThemeUtils.titleColor),
               ),
               const SizedBox(height: 10.0),
               Text(
                 '정답개수 : $count회',
-                style: const TextStyle(color: ThemeUtils.textColor),
+                style: const TextStyle(color: ThemeUtils.titleColor),
               ),
             ],
           )
