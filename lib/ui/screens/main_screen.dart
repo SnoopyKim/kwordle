@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:kwordle/providers/auth_provider.dart';
+import 'package:kwordle/ui/dialogs/auth.dart';
 import 'package:kwordle/ui/dialogs/user.dart';
 import 'package:kwordle/ui/screens/game_screen.dart';
 import 'package:kwordle/utils/game_utils.dart';
@@ -138,19 +139,21 @@ class _Record extends StatelessWidget {
             ),
           ),
           const SizedBox(width: 20.0),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                '시도횟수  :  $count회',
-                style: const TextStyle(color: ThemeUtils.contentColor),
-              ),
-              const SizedBox(height: 8.0),
-              Text(
-                '정답개수  :  $count회',
-                style: const TextStyle(color: ThemeUtils.contentColor),
-              ),
-            ],
+          IntrinsicHeight(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  '시도횟수  :  $count회',
+                  style: const TextStyle(color: ThemeUtils.contentColor),
+                ),
+                const SizedBox(height: 8.0),
+                Text(
+                  '정답개수  :  $count회',
+                  style: const TextStyle(color: ThemeUtils.contentColor),
+                ),
+              ],
+            ),
           )
         ],
       ),
