@@ -54,7 +54,6 @@ class _LetterBoxState extends State<LetterBox> {
               key: const ValueKey(true),
               width: widget.size,
               height: widget.size,
-              margin: const EdgeInsets.all(3.0),
               decoration: BoxDecoration(
                 color: widget.bgColor,
                 borderRadius: BorderRadius.circular(5.0),

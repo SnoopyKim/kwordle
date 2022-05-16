@@ -1,8 +1,10 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:kwordle/providers/game_provider.dart';
 import 'package:kwordle/ui/keyboard/keyboard_view.dart';
+import 'package:kwordle/utils/theme_utils.dart';
 import 'package:provider/provider.dart';
 
 import '../letter/letter_view.dart';
@@ -34,8 +36,29 @@ class _GameScreenState extends State<GameScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(title: Text('GameScreen')),
+      backgroundColor: ThemeUtils.neumorphismColor,
+      appBar: NeumorphicAppBar(
+        leading: NeumorphicButton(
+          style: NeumorphicStyle(depth: 4.0, intensity: 0.8),
+          child: Icon(
+            Icons.arrow_back,
+            color: ThemeUtils.highlightColor,
+            size: 26.0,
+          ),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
+        actions: [
+          NeumorphicButton(
+            style: NeumorphicStyle(depth: 4.0, intensity: 0.8),
+            child: Icon(
+              Icons.help_outline,
+              color: ThemeUtils.highlightColor,
+              size: 26.0,
+            ),
+            onPressed: () {},
+          )
+        ],
+      ),
       body: SafeArea(
         child: MultiProvider(
           providers: [
@@ -47,17 +70,21 @@ class _GameScreenState extends State<GameScreen> {
             children: [
               Column(children: [
                 Expanded(
-                    child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 20.0),
+                    child: Neumorphic(
+                  margin: const EdgeInsets.all(20.0),
+                  style: NeumorphicStyle(
+                      depth: -4.0, shape: NeumorphicShape.concave),
                   child: SingleChildScrollView(
-                      controller: _scrollController, child: Center(child: LetterView())),
+                      padding: const EdgeInsets.all(16.0),
+                      controller: _scrollController,
+                      child: LetterView()),
                 )),
                 KeyboardView(
                     onUpdate: () => _scrollController.animateTo(
                         _scrollController.position.maxScrollExtent,
                         duration: const Duration(milliseconds: 300),
                         curve: Curves.fastOutSlowIn)),
-                const SizedBox(height: 30.0),
+                const SizedBox(height: 20.0)
               ]),
               Selector<GameProvider, bool>(
                 selector: (context, provider) => provider.isToastCalled,
@@ -103,26 +130,31 @@ class _ToastState extends State<Toast> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-        padding: const EdgeInsets.only(top: 20.0),
-        child: AnimatedOpacity(
-            duration: const Duration(milliseconds: 300),
-            opacity: isShown ? 1.0 : 0.0,
-            onEnd: () {
-              if (!isShown) {
-                context.read<GameProvider>().dismissToast();
-              }
-            },
-            child: AnimatedContainer(
-              duration: const Duration(milliseconds: 300),
-              decoration:
-                  BoxDecoration(color: Colors.red, borderRadius: BorderRadius.circular(8.0)),
-              padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-              transform: isShown ? Matrix4.identity() : Matrix4.translationValues(0, -20, 0),
-              child: Text(
-                '등록되지 않은 단어입니다',
-                style: TextStyle(color: Colors.white, fontSize: 13.0, fontWeight: FontWeight.bold),
-              ),
-            )));
+    return AnimatedOpacity(
+        duration: const Duration(milliseconds: 300),
+        opacity: isShown ? 1.0 : 0.0,
+        onEnd: () {
+          if (!isShown) {
+            context.read<GameProvider>().dismissToast();
+          }
+        },
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 300),
+          decoration: BoxDecoration(
+              color: Color(0xffFF6961),
+              borderRadius: BorderRadius.circular(8.0),
+              boxShadow: kElevationToShadow[2]),
+          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+          transform: isShown
+              ? Matrix4.identity()
+              : Matrix4.translationValues(0, -20, 0),
+          child: const Text(
+            '등록되지 않은 단어입니다',
+            style: TextStyle(
+                color: Colors.white,
+                fontSize: 13.0,
+                fontWeight: FontWeight.bold),
+          ),
+        ));
   }
 }

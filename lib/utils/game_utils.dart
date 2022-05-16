@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 class GameMode {
   static const int FIVE = 5;
   static const int SIX = 6;
@@ -36,8 +38,11 @@ class GameUtils {
     for (int i = 0; i < result.length; i++) {
       if (word.contains(result[i]['letter']) && (result[i]['result'] != 2)) {
         result[i]['result'] = 1;
+        final index = word.indexOf(result[i]['letter']);
+        word = word.substring(0, index) + 'X' + word.substring(index + 1);
       }
     }
+    log(word);
     return result;
   }
 
