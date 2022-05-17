@@ -139,21 +139,19 @@ class _Record extends StatelessWidget {
             ),
           ),
           const SizedBox(width: 20.0),
-          IntrinsicHeight(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  '시도횟수  :  $count회',
-                  style: const TextStyle(color: ThemeUtils.contentColor),
-                ),
-                const SizedBox(height: 8.0),
-                Text(
-                  '정답개수  :  $count회',
-                  style: const TextStyle(color: ThemeUtils.contentColor),
-                ),
-              ],
-            ),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                '시도횟수  :  $count회',
+                style: const TextStyle(color: ThemeUtils.contentColor),
+              ),
+              const SizedBox(height: 8.0),
+              Text(
+                '정답개수  :  $count회',
+                style: const TextStyle(color: ThemeUtils.contentColor),
+              ),
+            ],
           )
         ],
       ),

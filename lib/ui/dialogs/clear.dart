@@ -63,88 +63,91 @@ class _ClearDialogState extends State<ClearDialog> {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
       child: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            AnimatedSwitcher(
-                duration: const Duration(milliseconds: 300),
-                child: data == null
-                    ? const Padding(
-                        padding: EdgeInsets.all(20.0),
-                        child: CircularProgressIndicator(),
-                      )
-                    : Column(
-                        mainAxisSize: MainAxisSize.min,
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          Text(
-                            data!.word,
-                            style: const TextStyle(
-                                color: ThemeUtils.titleColor,
-                                fontSize: 24.0,
-                                fontWeight: FontWeight.bold,
-                                letterSpacing: 2.0),
-                            textAlign: TextAlign.center,
-                          ),
-                          Padding(
-                            padding:
-                                const EdgeInsets.only(top: 4.0, bottom: 10.0),
-                            child: Text(
-                              '${widget.count}회 시도',
+        child: SizedBox(
+          width: 260,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              AnimatedSwitcher(
+                  duration: const Duration(milliseconds: 300),
+                  child: data == null
+                      ? const Padding(
+                          padding: EdgeInsets.all(20.0),
+                          child: CircularProgressIndicator(),
+                        )
+                      : Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            Text(
+                              data!.word,
                               style: const TextStyle(
-                                  color: ThemeUtils.contentColor,
-                                  fontSize: 13.0,
-                                  fontWeight: FontWeight.bold),
-                              textAlign: TextAlign.end,
+                                  color: ThemeUtils.titleColor,
+                                  fontSize: 24.0,
+                                  fontWeight: FontWeight.bold,
+                                  letterSpacing: 2.0),
+                              textAlign: TextAlign.center,
                             ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(bottom: 24.0),
-                            child: Text(
-                              data!.definition,
-                              style: const TextStyle(
-                                  color: ThemeUtils.contentColor,
-                                  fontSize: 15.0),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.only(top: 4.0, bottom: 10.0),
+                              child: Text(
+                                '${widget.count}회 시도',
+                                style: const TextStyle(
+                                    color: ThemeUtils.contentColor,
+                                    fontSize: 13.0,
+                                    fontWeight: FontWeight.bold),
+                                textAlign: TextAlign.end,
+                              ),
                             ),
-                          ),
-                        ],
-                      )),
-            NeumorphicButton(
-                style: const NeumorphicStyle(depth: 2.0, intensity: 0.8),
-                padding: const EdgeInsets.symmetric(vertical: 15.0),
-                onPressed: () {},
-                child: const Center(
-                  child: Text(
-                    '자랑하기',
-                    style: TextStyle(
-                      color: ThemeUtils.highlightColor,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16.0,
-                      letterSpacing: 1.5,
+                            Padding(
+                              padding: const EdgeInsets.only(bottom: 24.0),
+                              child: Text(
+                                data!.definition,
+                                style: const TextStyle(
+                                    color: ThemeUtils.contentColor,
+                                    fontSize: 15.0),
+                              ),
+                            ),
+                          ],
+                        )),
+              NeumorphicButton(
+                  style: const NeumorphicStyle(depth: 2.0, intensity: 0.8),
+                  padding: const EdgeInsets.symmetric(vertical: 15.0),
+                  onPressed: () {},
+                  child: const Center(
+                    child: Text(
+                      '자랑하기',
+                      style: TextStyle(
+                        color: ThemeUtils.highlightColor,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16.0,
+                        letterSpacing: 1.5,
+                      ),
                     ),
-                  ),
-                )),
-            const SizedBox(height: 16.0),
-            NeumorphicButton(
-                style: const NeumorphicStyle(depth: 2.0, intensity: 0.8),
-                padding: const EdgeInsets.symmetric(vertical: 15.0),
-                onPressed: () {
-                  widget.onPress();
-                  Navigator.pop(context);
-                },
-                child: const Center(
-                  child: Text(
-                    '다음',
-                    style: TextStyle(
-                      color: ThemeUtils.highlightColor,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16.0,
-                      letterSpacing: 2.0,
+                  )),
+              const SizedBox(height: 16.0),
+              NeumorphicButton(
+                  style: const NeumorphicStyle(depth: 2.0, intensity: 0.8),
+                  padding: const EdgeInsets.symmetric(vertical: 15.0),
+                  onPressed: () {
+                    widget.onPress();
+                    Navigator.pop(context);
+                  },
+                  child: const Center(
+                    child: Text(
+                      '다음',
+                      style: TextStyle(
+                        color: ThemeUtils.highlightColor,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16.0,
+                        letterSpacing: 2.0,
+                      ),
                     ),
-                  ),
-                )),
-          ],
+                  )),
+            ],
+          ),
         ),
       ),
     );

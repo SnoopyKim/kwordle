@@ -67,11 +67,11 @@ class AuthProvider with ChangeNotifier {
     });
   }
 
-  _updateUserData(String uid, Map<String, dynamic> data) async {
+  Future<void> _updateUserData(String uid, Map<String, dynamic> data) async {
     await userRef.child(uid).update(data);
   }
 
-  updateUserName(String name) async {
+  Future<void> updateUserName(String name) async {
     if (user == null) return;
     await user!.updateDisplayName(name);
     user!.reload();

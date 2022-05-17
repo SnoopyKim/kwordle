@@ -39,9 +39,7 @@ class _KeyboardButtonState extends State<KeyboardButton> {
       },
       child: Container(
         decoration: BoxDecoration(
-            color: isTapDown
-                ? HSLColor.fromColor(bgColor).withLightness(0.4).toColor()
-                : bgColor,
+            color: isTapDown ? ThemeUtils.neumorphismColor : bgColor,
             borderRadius: BorderRadius.circular(5.0),
             boxShadow: kElevationToShadow[1]),
         width: (MediaQuery.of(context).size.width - 40 - 6 * 8) / 9,
