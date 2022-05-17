@@ -4,6 +4,7 @@ import 'package:kwordle/providers/auth_provider.dart';
 import 'package:kwordle/ui/dialogs/auth.dart';
 import 'package:kwordle/ui/dialogs/user.dart';
 import 'package:kwordle/ui/screens/game_screen.dart';
+import 'package:kwordle/ui/screens/history_screen.dart';
 import 'package:kwordle/utils/game_utils.dart';
 import 'package:kwordle/utils/theme_utils.dart';
 import 'package:provider/provider.dart';
@@ -37,10 +38,12 @@ class MainScreen extends StatelessWidget {
                 size: 26.0,
                 color: ThemeUtils.highlightColor,
               ),
-              onPressed: () => showDialog(
-                  context: context,
-                  builder: (_) => UserDialog(uid: userUid),
-                  barrierDismissible: false),
+              onPressed: () => Navigator.push(
+                  context, MaterialPageRoute(builder: (_) => HistoryScreen())),
+              // showDialog(
+              //     context: context,
+              //     builder: (_) => UserDialog(uid: userUid),
+              //     barrierDismissible: false),
             )
           ],
         ),
