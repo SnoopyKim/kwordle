@@ -75,12 +75,19 @@ class _UserDialogState extends State<UserDialog> {
                                     ),
                                   ),
                                   _Record(
-                                      mode: GameMode.FIVE, count: user!.five),
-                                  const SizedBox(height: 16.0),
-                                  _Record(mode: GameMode.SIX, count: user!.six),
+                                      mode: GameMode.FIVE,
+                                      clear: user!.fiveClear,
+                                      count: user!.fiveCount),
                                   const SizedBox(height: 16.0),
                                   _Record(
-                                      mode: GameMode.SEVEN, count: user!.seven),
+                                      mode: GameMode.SIX,
+                                      clear: user!.sixClear,
+                                      count: user!.sixCount),
+                                  const SizedBox(height: 16.0),
+                                  _Record(
+                                      mode: GameMode.SEVEN,
+                                      clear: user!.sevenClear,
+                                      count: user!.sevenCount),
                                 ],
                               )
                             : SizedBox(
@@ -112,10 +119,12 @@ class _UserDialogState extends State<UserDialog> {
 }
 
 class _Record extends StatelessWidget {
-  const _Record({Key? key, required this.mode, required this.count})
+  const _Record(
+      {Key? key, required this.mode, required this.clear, required this.count})
       : super(key: key);
 
   final int mode;
+  final int clear;
   final int count;
 
   @override

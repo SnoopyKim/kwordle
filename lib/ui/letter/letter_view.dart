@@ -16,7 +16,8 @@ class LetterView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     _provider = context.watch();
-    if (!_provider.isReadyToInput && _provider.inputHistory.isEmpty) {
+    if (!_provider.isReadyToInput &&
+        !_provider.inputHistory.last.every((e) => e['result'] == 2)) {
       Timer(const Duration(milliseconds: 300),
           () => _provider.setReadyToInput(true));
     }

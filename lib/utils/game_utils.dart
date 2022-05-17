@@ -46,16 +46,34 @@ class GameUtils {
     return result;
   }
 
-  static String getModeText(int mode) {
+  static String getModeText(int mode, {bool isEng = false}) {
     switch (mode) {
       case GameMode.FIVE:
-        return '오';
+        return isEng ? 'five' : '오';
       case GameMode.SIX:
-        return '육';
+        return isEng ? 'six' : '육';
       case GameMode.SEVEN:
-        return '칠';
+        return isEng ? 'seven' : '칠';
       default:
         return '';
     }
+  }
+
+  static String getBoxName(int mode) {
+    String name = 'history';
+    switch (mode) {
+      case GameMode.FIVE:
+        name += '_five';
+        break;
+      case GameMode.SIX:
+        name += '_six';
+        break;
+      case GameMode.SEVEN:
+        name += '_seven';
+        break;
+      default:
+        name += '_six';
+    }
+    return name;
   }
 }

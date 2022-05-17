@@ -5,7 +5,7 @@ part 'history.g.dart';
 @HiveType(typeId: 1)
 class History {
   @HiveField(0)
-  final bool isClear;
+  final DateTime? clearTime;
 
   @HiveField(1)
   final String word;
@@ -20,7 +20,7 @@ class History {
   final List<List<Map<String, dynamic>>> history;
 
   History({
-    required this.isClear,
+    required this.clearTime,
     required this.word,
     required this.letters,
     required this.definition,

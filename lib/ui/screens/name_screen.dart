@@ -36,7 +36,7 @@ class _NameScreenState extends State<NameScreen> {
       setState(() {
         isBusy = true;
       });
-      await Hive.box('storage').put('username', name);
+      await Hive.box('setting').put('username', name);
       await _authProvider.updateUserName(name);
     }
   }

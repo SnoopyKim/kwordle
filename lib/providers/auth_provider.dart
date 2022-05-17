@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:kwordle/models/user.dart' as Model;
 import 'package:kwordle/utils/game_utils.dart';
 
 class AuthProvider with ChangeNotifier {
@@ -58,13 +59,10 @@ class AuthProvider with ChangeNotifier {
 
   createUserData(User? user) async {
     if (user == null) return;
-    userRef.child(user.uid).set({
-      'email': user.email,
-      'name': user.displayName,
-      'five': 0,
-      'six': 0,
-      'seven': 0,
-    });
+    userRef.child(user.uid).set(Model.User.register(
+            email: user.email ?? '', name: user.displayName ?? '')
+        .toMap()
+      ..remove('uid'));
   }
 
   Future<void> _updateUserData(String uid, Map<String, dynamic> data) async {
@@ -76,6 +74,15 @@ class AuthProvider with ChangeNotifier {
     await user!.updateDisplayName(name);
     user!.reload();
     await _updateUserData(user!.uid, {'name': name});
+  }
+
+  Future<void> updateUserHistory(int mode, int clear, int count) async {
+    if (user == null) return;
+    String modeText = GameUtils.getModeText(mode, isEng: true);
+    await _updateUserData(user!.uid, {
+      '${modeText}Clear': clear,
+      '${modeText}Count': count,
+    });
   }
 
   void logout() {

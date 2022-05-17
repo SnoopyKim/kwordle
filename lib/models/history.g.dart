@@ -17,7 +17,7 @@ class HistoryAdapter extends TypeAdapter<History> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return History(
-      isClear: fields[0] as bool,
+      clearTime: fields[0] as DateTime?,
       word: fields[1] as String,
       letters: fields[2] as String,
       definition: fields[3] as String,
@@ -34,7 +34,7 @@ class HistoryAdapter extends TypeAdapter<History> {
     writer
       ..writeByte(5)
       ..writeByte(0)
-      ..write(obj.isClear)
+      ..write(obj.clearTime)
       ..writeByte(1)
       ..write(obj.word)
       ..writeByte(2)
