@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:kwordle/providers/game_provider.dart';
+import 'package:kwordle/ui/dialogs/help.dart';
 import 'package:kwordle/ui/keyboard/keyboard_view.dart';
 import 'package:kwordle/utils/theme_utils.dart';
 import 'package:provider/provider.dart';
@@ -55,7 +56,8 @@ class _GameScreenState extends State<GameScreen> {
               color: ThemeUtils.highlightColor,
               size: 26.0,
             ),
-            onPressed: () {},
+            onPressed: () => showDialog(
+                context: context, builder: (_) => const HelpDialog()),
           )
         ],
       ),
