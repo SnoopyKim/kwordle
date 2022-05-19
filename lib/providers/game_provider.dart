@@ -51,6 +51,7 @@ class GameProvider with ChangeNotifier {
   bool isReadyToInput = false;
 
   void setReadyToInput(bool value) {
+    if (isReadyToInput == value) return;
     isReadyToInput = value;
     notifyListeners();
   }
