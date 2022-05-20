@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "542982562892-a1vq45jefkfk6uhhlkekphn9c3u0mp3r.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "dev.snoopy.kwordle",
+            "certificate_hash": "46a030139351e8ef4bf167811de86dcf88bfffb7"
+          }
+        },
+        {
           "client_id": "542982562892-o0qgv9l72t3n3e545vmdadldpnnu8ifo.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

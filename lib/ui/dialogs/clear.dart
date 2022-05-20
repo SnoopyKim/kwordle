@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:hive/hive.dart';
@@ -11,6 +12,8 @@ import 'package:kwordle/providers/auth_provider.dart';
 import 'package:kwordle/utils/game_utils.dart';
 import 'package:kwordle/utils/theme_utils.dart';
 import 'package:provider/provider.dart';
+import 'package:share_plus/share_plus.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 // return 0: 게임종료 | 1: 다음단어
 class ClearDialog extends StatefulWidget {
@@ -76,6 +79,52 @@ class _ClearDialogState extends State<ClearDialog> {
     return path;
   }
 
+  Future<String> _createDynamicLink() async {
+    String baseLink = 'https://kwordle.page.link';
+    final DynamicLinkParameters parameters = DynamicLinkParameters(
+      uriPrefix: baseLink,
+      link: Uri.parse(
+          '$baseLink?mode=${widget.mode}&wordIndex=${widget.wordIndex}'),
+      androidParameters: const AndroidParameters(
+        packageName: 'dev.snoopy.kwordle',
+        minimumVersion: 0,
+      ),
+      // iosParameters: const IOSParameters(
+      //   bundleId: 'io.invertase.testing',
+      //   minimumVersion: '0',
+      // ),
+    );
+
+    final ShortDynamicLink shortLink =
+        await FirebaseDynamicLinks.instance.buildShortLink(parameters);
+    return shortLink.shortUrl.toString();
+  }
+
+  String _createPicture() {
+    String picture = '';
+    for (var row in widget.history) {
+      for (var letter in row) {
+        switch (letter['result']) {
+          case 2:
+            picture += '🟩';
+            break;
+          case 1:
+            picture += '🟨';
+            break;
+          default:
+            picture += '⬜';
+        }
+      }
+      picture += '\n';
+    }
+    return picture;
+  }
+
+  Future<void> shareResult() async {
+    String url = await _createDynamicLink();
+    Share.share('어떤 단어일까요? 쿼들에서 풀어보세요!\n${_createPicture()}\n$url');
+  }
+
   @override
   Widget build(BuildContext context) {
     return Dialog(
@@ -135,7 +184,7 @@ class _ClearDialogState extends State<ClearDialog> {
               NeumorphicButton(
                   style: const NeumorphicStyle(depth: 2.0),
                   padding: const EdgeInsets.symmetric(vertical: 12.0),
-                  onPressed: () {},
+                  onPressed: shareResult,
                   child: const Center(
                     child: Text(
                       '자랑하기',
