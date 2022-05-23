@@ -8,6 +8,7 @@ import 'package:kwordle/ui/dialogs/auth.dart';
 import 'package:kwordle/ui/dialogs/user.dart';
 import 'package:kwordle/ui/screens/game_screen.dart';
 import 'package:kwordle/ui/screens/history_screen.dart';
+import 'package:kwordle/ui/screens/rank_screen.dart';
 import 'package:kwordle/utils/game_utils.dart';
 import 'package:kwordle/utils/theme_utils.dart';
 import 'package:provider/provider.dart';
@@ -42,7 +43,7 @@ class MainScreen extends StatelessWidget {
                 color: ThemeUtils.highlightColor,
               ),
               onPressed: () => Navigator.push(
-                  context, MaterialPageRoute(builder: (_) => HistoryScreen())),
+                  context, MaterialPageRoute(builder: (_) => RankScreen())),
               // showDialog(
               //     context: context,
               //     builder: (_) => UserDialog(uid: userUid),

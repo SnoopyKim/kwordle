@@ -9,109 +9,75 @@ import 'package:kwordle/models/word.dart';
 import 'package:kwordle/utils/game_utils.dart';
 import 'package:kwordle/utils/theme_utils.dart';
 
-class UserDialog extends StatefulWidget {
-  const UserDialog({
-    Key? key,
-    required this.uid,
-  }) : super(key: key);
-  final String uid;
-
-  @override
-  State<UserDialog> createState() => _UserDialogState();
-}
-
-class _UserDialogState extends State<UserDialog> {
-  User? user;
-
-  @override
-  void initState() {
-    super.initState();
-    DatabaseReference userRef =
-        FirebaseDatabase.instance.ref('users/${widget.uid}');
-    userRef.get().then((snapshot) => setState(() {
-          if (snapshot.exists) {
-            final data = snapshot.value as Map<dynamic, dynamic>;
-            data['uid'] = widget.uid;
-            user = User.fromMap(data);
-          } else {
-            user = User.empty();
-          }
-        }));
-  }
+class UserDialog extends StatelessWidget {
+  const UserDialog({Key? key, required this.user}) : super(key: key);
+  final User user;
 
   @override
   Widget build(BuildContext context) {
-    bool isLoaded = user != null;
-    bool isUserDataEmpty = user?.uid.isEmpty ?? false;
     return Dialog(
       backgroundColor: ThemeUtils.neumorphismColor,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
-      child: IntrinsicHeight(
-        child: Stack(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                children: [
-                  AnimatedSwitcher(
-                      duration: const Duration(milliseconds: 300),
-                      child: IntrinsicHeight(
-                        child: isLoaded
-                            ? Column(
-                                crossAxisAlignment: CrossAxisAlignment.stretch,
-                                children: [
-                                  Container(
-                                    padding: const EdgeInsets.symmetric(
-                                        vertical: 8.0, horizontal: 16.0),
-                                    margin: const EdgeInsets.only(bottom: 16.0),
-                                    child: Text(
-                                      user!.name,
-                                      style: const TextStyle(
-                                          color: ThemeUtils.titleColor,
-                                          fontSize: 20.0,
-                                          fontWeight: FontWeight.bold,
-                                          letterSpacing: 2.0),
-                                      textAlign: TextAlign.center,
-                                    ),
-                                  ),
-                                  _Record(
-                                      mode: GameMode.FIVE,
-                                      clear: user!.fiveClear,
-                                      count: user!.fiveCount),
-                                  const SizedBox(height: 16.0),
-                                  _Record(
-                                      mode: GameMode.SIX,
-                                      clear: user!.sixClear,
-                                      count: user!.sixCount),
-                                  const SizedBox(height: 16.0),
-                                  _Record(
-                                      mode: GameMode.SEVEN,
-                                      clear: user!.sevenClear,
-                                      count: user!.sevenCount),
-                                ],
-                              )
-                            : SizedBox(
-                                height:
-                                    MediaQuery.of(context).size.height * 0.5,
-                                child: const Center(
-                                    child: CircularProgressIndicator(
-                                        color: ThemeUtils.highlightColor)),
-                              ),
-                      )),
-                ],
-              ),
-            ),
-            Align(
-              alignment: Alignment.topRight,
-              child: IconButton(
-                splashRadius: 24.0,
-                constraints: const BoxConstraints(),
+      child: SizedBox(
+        width: 240,
+        child: IntrinsicHeight(
+          child: Stack(
+            children: [
+              Padding(
                 padding: const EdgeInsets.all(16.0),
-                icon: const Icon(Icons.close, color: ThemeUtils.titleColor),
-                onPressed: () => Navigator.of(context).pop(),
+                child: Column(
+                  children: [
+                    AnimatedSwitcher(
+                        duration: const Duration(milliseconds: 300),
+                        child: IntrinsicHeight(
+                            child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 8.0, horizontal: 16.0),
+                              margin: const EdgeInsets.only(bottom: 16.0),
+                              child: Text(
+                                user.name,
+                                style: const TextStyle(
+                                    color: ThemeUtils.titleColor,
+                                    fontSize: 20.0,
+                                    fontWeight: FontWeight.bold,
+                                    letterSpacing: 2.0),
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                            _Record(
+                                mode: GameMode.FIVE,
+                                clear: user.fiveClear,
+                                count: user.fiveCount),
+                            const SizedBox(height: 16.0),
+                            _Record(
+                                mode: GameMode.SIX,
+                                clear: user.sixClear,
+                                count: user.sixCount),
+                            const SizedBox(height: 16.0),
+                            _Record(
+                                mode: GameMode.SEVEN,
+                                clear: user.sevenClear,
+                                count: user.sevenCount),
+                          ],
+                        ))),
+                  ],
+                ),
               ),
-            ),
-          ],
+              Align(
+                alignment: Alignment.topRight,
+                child: IconButton(
+                  splashRadius: 24.0,
+                  constraints: const BoxConstraints(),
+                  padding: const EdgeInsets.all(16.0),
+                  icon: const Icon(Icons.close, color: ThemeUtils.titleColor),
+                  onPressed: () => Navigator.of(context).pop(),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -156,7 +122,7 @@ class _Record extends StatelessWidget {
                 ),
                 const SizedBox(height: 10.0),
                 Text(
-                  '정답개수 : $count회',
+                  '정답개수 : $clear회',
                   style: const TextStyle(color: ThemeUtils.titleColor),
                 ),
               ],

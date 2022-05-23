@@ -17,6 +17,7 @@ class SimpleLetterView extends StatelessWidget {
       width: size,
       child: GridView.builder(
         shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: col,
             childAspectRatio: 1.0,

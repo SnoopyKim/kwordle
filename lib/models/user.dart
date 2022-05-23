@@ -1,3 +1,5 @@
+import 'package:kwordle/utils/game_utils.dart';
+
 class User {
   String uid;
   String email;
@@ -70,5 +72,30 @@ class User {
     map['sevenClear'] = sevenClear;
     map['sevenCount'] = sevenCount;
     return map;
+  }
+
+  int getScore(int mode) {
+    switch (mode) {
+      case GameMode.FIVE:
+        if (fiveCount == 0) {
+          return 0;
+        } else {
+          return (fiveClear / fiveCount * 10).floor();
+        }
+      case GameMode.SIX:
+        if (sixCount == 0) {
+          return 0;
+        } else {
+          return (sixClear / sixCount * 10).floor();
+        }
+      case GameMode.SEVEN:
+        if (sevenCount == 0) {
+          return 0;
+        } else {
+          return (sevenClear / sevenCount * 10).floor();
+        }
+      default:
+        return 0;
+    }
   }
 }
