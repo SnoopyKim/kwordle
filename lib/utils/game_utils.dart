@@ -32,14 +32,14 @@ class GameUtils {
     for (int i = 0; i < result.length; i++) {
       if (word.indexOf(result[i]['letter']) == i) {
         result[i]['result'] = 2;
-        word = word.substring(0, i) + 'X' + word.substring(i + 1);
+        word = '${word.substring(0, i)}X${word.substring(i + 1)}';
       }
     }
     for (int i = 0; i < result.length; i++) {
       if (word.contains(result[i]['letter']) && (result[i]['result'] != 2)) {
         result[i]['result'] = 1;
         final index = word.indexOf(result[i]['letter']);
-        word = word.substring(0, index) + 'X' + word.substring(index + 1);
+        word = '${word.substring(0, index)}X${word.substring(index + 1)}';
       }
     }
     log(word);

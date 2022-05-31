@@ -1,19 +1,11 @@
-import 'dart:developer';
 import 'dart:math' hide log;
 
 import 'package:firebase_database/firebase_database.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
-import 'package:hive/hive.dart';
-import 'package:kwordle/models/history.dart';
 import 'package:kwordle/models/user.dart';
 import 'package:kwordle/ui/dialogs/user.dart';
-import 'package:kwordle/ui/letter/simple_letter_view.dart';
 import 'package:kwordle/utils/game_utils.dart';
 import 'package:kwordle/utils/theme_utils.dart';
-import 'package:intl/intl.dart';
 
 class RankScreen extends StatefulWidget {
   const RankScreen({Key? key}) : super(key: key);

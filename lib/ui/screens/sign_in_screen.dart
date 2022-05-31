@@ -7,7 +7,7 @@ class SignInScreen extends StatefulWidget {
   const SignInScreen({Key? key}) : super(key: key);
 
   @override
-  _SignInScreenState createState() => _SignInScreenState();
+  State<SignInScreen> createState() => _SignInScreenState();
 }
 
 class _SignInScreenState extends State<SignInScreen> {
@@ -43,7 +43,7 @@ class _SignInScreenState extends State<SignInScreen> {
               child: isBusy
                   ? const CircularProgressIndicator()
                   : ElevatedButton(
-                      onPressed: signIn, child: Text('google sign in')),
+                      onPressed: signIn, child: const Text('google sign in')),
             )
           ],
         ),

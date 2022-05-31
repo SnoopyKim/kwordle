@@ -1,7 +1,5 @@
-import 'dart:developer';
-import 'dart:math';
+import 'dart:math' as math;
 
-import 'package:flutter/material.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:kwordle/providers/game_provider.dart';
 import 'package:kwordle/utils/game_utils.dart';
@@ -21,7 +19,7 @@ class KeyboardView extends StatelessWidget {
     List<List<Map<String, dynamic>>> history = context.select((GameProvider p) {
       return p.inputHistory;
     });
-    GameProvider _gameProvider = context.read();
+    GameProvider gameProvider = context.read();
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: keys.map<Widget>(
@@ -48,29 +46,29 @@ class KeyboardView extends StatelessWidget {
             children: [
               NeumorphicButton(
                   padding: const EdgeInsets.all(0.0),
-                  style: NeumorphicStyle(depth: 4.0, intensity: 1.0),
-                  onPressed: _gameProvider.erase,
+                  style: const NeumorphicStyle(depth: 4.0, intensity: 1.0),
+                  onPressed: gameProvider.erase,
                   child: SizedBox(
                     width: 100,
                     height: 50,
                     child: Transform.rotate(
-                      angle: pi,
+                      angle: math.pi,
                       child: Transform.scale(
                         scaleY: 0.7,
-                        child: Icon(Icons.forward,
+                        child: const Icon(Icons.forward,
                             color: ThemeUtils.highlightColor, size: 40.0),
                       ),
                     ),
                   )),
               NeumorphicButton(
                   padding: const EdgeInsets.all(0.0),
-                  style: NeumorphicStyle(depth: 4.0, intensity: 1.0),
+                  style: const NeumorphicStyle(depth: 4.0, intensity: 1.0),
                   onPressed: () {
-                    final submitResult = _gameProvider.submit();
+                    final submitResult = gameProvider.submit();
                     if (submitResult == false) {
-                      _gameProvider.showToast();
+                      gameProvider.showToast();
                     } else if (submitResult == true) {
-                      _gameProvider.checkClear(context, onUpdate);
+                      gameProvider.checkClear(context, onUpdate);
                     }
                   },
                   child: SizedBox(
@@ -78,7 +76,7 @@ class KeyboardView extends StatelessWidget {
                       height: 50,
                       child: Transform.scale(
                         scaleY: 0.8,
-                        child: Icon(Icons.send,
+                        child: const Icon(Icons.send,
                             color: ThemeUtils.highlightColor, size: 30.0),
                       ))),
             ],

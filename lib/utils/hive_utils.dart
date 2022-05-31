@@ -49,11 +49,9 @@ class HiveUtils {
   clearBox() async {
     await Future.wait([
       fiveBox.clear(),
-      fiveBox.close(),
       sixBox.clear(),
-      sixBox.close(),
       sevenBox.clear(),
-      sevenBox.close(),
     ]);
+    await closeBox();
   }
 }

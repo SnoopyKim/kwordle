@@ -1,9 +1,7 @@
 import 'dart:async';
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:kwordle/providers/game_provider.dart';
-import 'package:kwordle/utils/theme_utils.dart';
 import 'package:provider/provider.dart';
 
 import 'letter_box.dart';

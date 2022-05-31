@@ -17,7 +17,6 @@ class MainScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String userUid = context.read<AuthProvider>().user?.uid ?? '';
     return Scaffold(
         backgroundColor: ThemeUtils.neumorphismColor,
         appBar: NeumorphicAppBar(
@@ -80,7 +79,7 @@ class MainScreen extends StatelessWidget {
                         selector: (_, provider) => provider.user?.displayName,
                         builder: (context, value, child) => Text(
                           value ?? '',
-                          style: TextStyle(
+                          style: const TextStyle(
                               fontSize: 26.0,
                               fontWeight: FontWeight.bold,
                               color: ThemeUtils.titleColor),
@@ -307,7 +306,7 @@ class _EndDrawer extends StatelessWidget {
 }
 
 class _NameContainer extends StatefulWidget {
-  _NameContainer({Key? key}) : super(key: key);
+  const _NameContainer({Key? key}) : super(key: key);
 
   @override
   State<_NameContainer> createState() => __NameContainerState();

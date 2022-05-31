@@ -1,11 +1,6 @@
-import 'dart:convert';
-import 'dart:developer';
-
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
-import 'package:hive/hive.dart';
 import 'package:kwordle/models/history.dart';
 import 'package:kwordle/models/word.dart';
 import 'package:kwordle/providers/auth_provider.dart';
@@ -14,7 +9,6 @@ import 'package:kwordle/utils/hive_utils.dart';
 import 'package:kwordle/utils/theme_utils.dart';
 import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 // return 0: 게임종료 | 1: 다음단어
 class ClearDialog extends StatefulWidget {

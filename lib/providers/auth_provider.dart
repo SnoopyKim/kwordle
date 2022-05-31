@@ -93,6 +93,7 @@ class AuthProvider with ChangeNotifier {
 
   Future logout() async {
     await Hive.box('setting').delete('username');
+    await HiveUtils().closeBox();
     await _googleSignIn.disconnect();
     await FirebaseAuth.instance.signOut();
   }

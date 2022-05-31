@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:flutter/material.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:kwordle/providers/game_provider.dart';
 import 'package:kwordle/ui/dialogs/help.dart';
@@ -40,8 +39,8 @@ class _GameScreenState extends State<GameScreen> {
       backgroundColor: ThemeUtils.neumorphismColor,
       appBar: NeumorphicAppBar(
         leading: NeumorphicButton(
-          style: NeumorphicStyle(depth: 4.0, intensity: 0.8),
-          child: Icon(
+          style: const NeumorphicStyle(depth: 4.0, intensity: 0.8),
+          child: const Icon(
             Icons.arrow_back,
             color: ThemeUtils.highlightColor,
             size: 26.0,
@@ -50,8 +49,8 @@ class _GameScreenState extends State<GameScreen> {
         ),
         actions: [
           NeumorphicButton(
-            style: NeumorphicStyle(depth: 4.0, intensity: 0.8),
-            child: Icon(
+            style: const NeumorphicStyle(depth: 4.0, intensity: 0.8),
+            child: const Icon(
               Icons.help_outline,
               color: ThemeUtils.highlightColor,
               size: 26.0,
@@ -74,7 +73,7 @@ class _GameScreenState extends State<GameScreen> {
                 Expanded(
                     child: Neumorphic(
                   margin: const EdgeInsets.all(20.0),
-                  style: NeumorphicStyle(
+                  style: const NeumorphicStyle(
                       depth: -4.0, shape: NeumorphicShape.concave),
                   child: SingleChildScrollView(
                       padding: const EdgeInsets.all(16.0),
@@ -143,7 +142,7 @@ class _ToastState extends State<Toast> {
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 300),
           decoration: BoxDecoration(
-              color: Color(0xffFF6961),
+              color: const Color(0xffFF6961),
               borderRadius: BorderRadius.circular(8.0),
               boxShadow: kElevationToShadow[2]),
           padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),

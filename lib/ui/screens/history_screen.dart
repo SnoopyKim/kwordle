@@ -1,17 +1,14 @@
 import 'dart:developer';
 import 'dart:math' hide log;
 
-import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
+import "package:intl/intl.dart" show DateFormat;
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
-import 'package:hive/hive.dart';
+
 import 'package:kwordle/models/history.dart';
 import 'package:kwordle/ui/letter/simple_letter_view.dart';
 import 'package:kwordle/utils/game_utils.dart';
 import 'package:kwordle/utils/hive_utils.dart';
 import 'package:kwordle/utils/theme_utils.dart';
-import 'package:intl/intl.dart';
 
 class HistoryScreen extends StatefulWidget {
   const HistoryScreen({Key? key}) : super(key: key);
@@ -118,14 +115,14 @@ class _HistoryScreenState extends State<HistoryScreen> {
                           children: [
                             NeumorphicIcon(
                               Icons.close,
-                              style:
-                                  NeumorphicStyle(depth: 2.0, intensity: 1.0),
+                              style: const NeumorphicStyle(
+                                  depth: 2.0, intensity: 1.0),
                               size: 150,
                             ),
                             NeumorphicText(
                               '기록 없음',
-                              style:
-                                  NeumorphicStyle(depth: 1.0, intensity: 1.0),
+                              style: const NeumorphicStyle(
+                                  depth: 1.0, intensity: 1.0),
                               textStyle: NeumorphicTextStyle(
                                 fontSize: 30.0,
                                 fontWeight: FontWeight.bold,
@@ -176,7 +173,7 @@ class _HistoryCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Neumorphic(
-      style: NeumorphicStyle(depth: 4.0, intensity: 1.0),
+      style: const NeumorphicStyle(depth: 4.0, intensity: 1.0),
       padding: const EdgeInsets.all(20.0),
       child: Row(
         children: [
@@ -186,7 +183,7 @@ class _HistoryCard extends StatelessWidget {
               children: [
                 Text(
                   _history.word,
-                  style: TextStyle(
+                  style: const TextStyle(
                       color: ThemeUtils.titleColor,
                       fontSize: 20.0,
                       fontWeight: FontWeight.bold),
@@ -194,14 +191,14 @@ class _HistoryCard extends StatelessWidget {
                 const SizedBox(height: 20),
                 Text(
                   _history.definition,
-                  style:
-                      TextStyle(color: ThemeUtils.contentColor, fontSize: 14.0),
+                  style: const TextStyle(
+                      color: ThemeUtils.contentColor, fontSize: 14.0),
                 ),
                 const SizedBox(height: 20),
                 Text(
                   DateFormat('yyyy-MM-dd').format(_history.clearTime!),
-                  style:
-                      TextStyle(color: ThemeUtils.contentColor, fontSize: 12.0),
+                  style: const TextStyle(
+                      color: ThemeUtils.contentColor, fontSize: 12.0),
                 ),
               ],
             ),

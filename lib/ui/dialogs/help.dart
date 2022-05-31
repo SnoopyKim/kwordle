@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:kwordle/utils/game_utils.dart';
 import 'package:kwordle/utils/theme_utils.dart';
 
 class HelpDialog extends StatelessWidget {

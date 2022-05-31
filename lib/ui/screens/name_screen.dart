@@ -1,8 +1,3 @@
-import 'dart:developer';
-
-import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:hive/hive.dart';
 import 'package:kwordle/providers/auth_provider.dart';
@@ -42,12 +37,13 @@ class _NameScreenState extends State<NameScreen> {
       await _authProvider.updateUserName(name);
       if (mounted) {
         Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(builder: (_) => MainScreen()), (_) => false);
+            MaterialPageRoute(builder: (_) => const MainScreen()),
+            (_) => false);
       }
     } else {
       await Hive.box('setting').put('username', name);
       Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(builder: (_) => MainScreen()), (_) => false);
+          MaterialPageRoute(builder: (_) => const MainScreen()), (_) => false);
     }
   }
 
@@ -129,7 +125,7 @@ class _NameScreenState extends State<NameScreen> {
                               child: CircularProgressIndicator())
                           : Text(
                               Navigator.of(context).canPop() ? '변경' : '확인',
-                              style: TextStyle(
+                              style: const TextStyle(
                                   color: ThemeUtils.highlightColor,
                                   fontSize: 18.0,
                                   fontWeight: FontWeight.bold,

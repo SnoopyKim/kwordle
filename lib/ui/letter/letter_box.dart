@@ -1,6 +1,5 @@
 import 'dart:async';
-import 'dart:developer';
-import 'dart:math' hide log;
+import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:kwordle/ui/letter/input_box.dart';
@@ -78,7 +77,7 @@ class _LetterBoxState extends State<LetterBox> {
   }
 
   Widget flipAnimBuilder(Widget widget, Animation<double> anim) {
-    final rotate = Tween(begin: pi, end: 0.0).animate(anim);
+    final rotate = Tween(begin: math.pi, end: 0.0).animate(anim);
 
     return AnimatedBuilder(
         animation: rotate,
@@ -88,12 +87,13 @@ class _LetterBoxState extends State<LetterBox> {
           final isBack = ValueKey(isChanged) != widget?.key;
           var tilt = ((anim.value - 0.5).abs() - 0.5) * 0.003;
           tilt *= isBack ? -1.0 : 1.0;
-          final value = isBack ? min(rotate.value, pi / 2) : rotate.value;
+          final value =
+              isBack ? math.min(rotate.value, math.pi / 2) : rotate.value;
 
           return Transform(
             transform: Matrix4.rotationX(value)..setEntry(3, 0, tilt),
-            child: widget,
             alignment: Alignment.center,
+            child: widget,
           );
         });
   }

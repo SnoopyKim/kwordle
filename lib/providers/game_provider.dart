@@ -5,14 +5,12 @@ import 'dart:math' hide log;
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:kwordle/models/history.dart';
-import 'package:kwordle/providers/auth_provider.dart';
 import 'package:kwordle/ui/dialogs/clear.dart';
 import 'package:kwordle/utils/game_utils.dart';
 import 'package:kwordle/utils/hive_utils.dart';
 import 'package:kwordle/word_data/five.dart';
 import 'package:kwordle/word_data/seven.dart';
 import 'package:kwordle/word_data/six.dart';
-import 'package:provider/provider.dart';
 
 class GameProvider with ChangeNotifier {
   int mode;
