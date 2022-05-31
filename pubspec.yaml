@@ -25,6 +25,7 @@ dependencies:
   firebase_dynamic_links: ^4.2.3
   url_launcher: ^6.1.2
   share_plus: ^4.0.4
+  package_info_plus: ^1.4.2
 
 dev_dependencies:
   flutter_test:

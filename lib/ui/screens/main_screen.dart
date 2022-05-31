@@ -4,6 +4,7 @@ import 'package:kwordle/ui/screens/game_screen.dart';
 import 'package:kwordle/ui/screens/rank_screen.dart';
 import 'package:kwordle/utils/game_utils.dart';
 import 'package:kwordle/utils/theme_utils.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:provider/provider.dart';
 
 import 'name_screen.dart';
@@ -54,6 +55,7 @@ class MainScreen extends StatelessWidget {
             })
           ],
         ),
+        endDrawerEnableOpenDragGesture: false,
         endDrawer: const _EndDrawer(),
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 30.0),
@@ -136,7 +138,7 @@ class _EndDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Drawer(
-      width: MediaQuery.of(context).size.width * 0.7,
+      width: MediaQuery.of(context).size.width * 0.8,
       backgroundColor: ThemeUtils.neumorphismColor,
       child: Padding(
         padding: const EdgeInsets.all(20.0),
@@ -264,6 +266,33 @@ class _EndDrawer extends StatelessWidget {
                 textAlign: TextAlign.center,
               ),
             ),
+            Expanded(
+                child: Align(
+              alignment: Alignment.bottomLeft,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  FutureBuilder<PackageInfo>(
+                      future: PackageInfo.fromPlatform(),
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          String version = snapshot.data!.version;
+                          String buildNumber = snapshot.data!.buildNumber;
+                          return Text(
+                            '앱 버전 : $version ($buildNumber)',
+                            style: const TextStyle(
+                                color: ThemeUtils.contentColor, fontSize: 12),
+                          );
+                        }
+                        return const SizedBox.shrink();
+                      }),
+                  const SelectableText('제작자 : snoopykim.dev@gmail.com',
+                      style: TextStyle(
+                          color: ThemeUtils.contentColor, fontSize: 12)),
+                ],
+              ),
+            ))
           ],
         ),
       ),
