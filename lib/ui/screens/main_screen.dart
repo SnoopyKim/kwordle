@@ -1,17 +1,12 @@
-import 'dart:developer';
-
-import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:kwordle/providers/auth_provider.dart';
-import 'package:kwordle/ui/dialogs/auth.dart';
-import 'package:kwordle/ui/dialogs/user.dart';
 import 'package:kwordle/ui/screens/game_screen.dart';
-import 'package:kwordle/ui/screens/history_screen.dart';
 import 'package:kwordle/ui/screens/rank_screen.dart';
 import 'package:kwordle/utils/game_utils.dart';
 import 'package:kwordle/utils/theme_utils.dart';
 import 'package:provider/provider.dart';
+
+import 'name_screen.dart';
 
 class MainScreen extends StatelessWidget {
   const MainScreen({Key? key}) : super(key: key);
@@ -22,35 +17,44 @@ class MainScreen extends StatelessWidget {
     return Scaffold(
         backgroundColor: ThemeUtils.neumorphismColor,
         appBar: NeumorphicAppBar(
+          automaticallyImplyLeading: false,
           title: Container(
             height: kToolbarHeight,
             alignment: Alignment.centerLeft,
-            child: Text('쿼 들',
+            child: const Text('쿼 들',
                 style: TextStyle(
                   fontSize: 36.0,
                   fontWeight: FontWeight.bold,
                   color: ThemeUtils.titleColor,
                 )),
           ),
-          // centerTitle: true,
+          actionSpacing: 20,
           actions: [
             NeumorphicButton(
-              style: NeumorphicStyle(depth: 4.0, intensity: 0.8),
+              style: const NeumorphicStyle(depth: 4.0, intensity: 0.8),
               padding: EdgeInsets.zero,
-              child: Icon(
-                Icons.person,
+              child: const Icon(
+                Icons.leaderboard_rounded,
                 size: 26.0,
                 color: ThemeUtils.highlightColor,
               ),
-              onPressed: () => Navigator.push(
-                  context, MaterialPageRoute(builder: (_) => RankScreen())),
-              // showDialog(
-              //     context: context,
-              //     builder: (_) => UserDialog(uid: userUid),
-              //     barrierDismissible: false),
-            )
+              onPressed: () => Navigator.push(context,
+                  MaterialPageRoute(builder: (_) => const RankScreen())),
+            ),
+            Builder(builder: (context) {
+              return NeumorphicButton(
+                  style: const NeumorphicStyle(depth: 4.0, intensity: 0.8),
+                  padding: EdgeInsets.zero,
+                  child: const Icon(
+                    Icons.settings_rounded,
+                    size: 26.0,
+                    color: ThemeUtils.highlightColor,
+                  ),
+                  onPressed: () => Scaffold.of(context).openEndDrawer());
+            })
           ],
         ),
+        endDrawer: const _EndDrawer(),
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 30.0),
           child: Column(
@@ -59,14 +63,14 @@ class MainScreen extends StatelessWidget {
             children: [
               Expanded(
                 child: Neumorphic(
-                  style: NeumorphicStyle(
+                  style: const NeumorphicStyle(
                       depth: -5.0,
                       border: NeumorphicBorder(color: ThemeUtils.contentColor)),
                   padding: const EdgeInsets.all(30.0),
                   margin: const EdgeInsets.only(top: 8.0, bottom: 30.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
+                    children: const [
                       Text(
                         '김재훈',
                         style: TextStyle(
@@ -75,7 +79,7 @@ class MainScreen extends StatelessWidget {
                             color: ThemeUtils.titleColor),
                         textAlign: TextAlign.center,
                       ),
-                      const SizedBox(height: 20.0),
+                      SizedBox(height: 20.0),
                       _Record(mode: GameMode.FIVE, count: 0),
                       _Record(mode: GameMode.SIX, count: 0),
                       _Record(mode: GameMode.SEVEN, count: 0),
@@ -101,6 +105,169 @@ class MainScreen extends StatelessWidget {
             ],
           ),
         ));
+  }
+}
+
+class _EndDrawer extends StatelessWidget {
+  const _EndDrawer({Key? key}) : super(key: key);
+
+  _showLoading(BuildContext context, Future future) async {
+    late BuildContext dialogContext;
+    showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (context) {
+          dialogContext = context;
+          return WillPopScope(
+            onWillPop: () => Future.value(false),
+            child: const Dialog(
+              backgroundColor: Colors.transparent,
+              child: Center(
+                child: SizedBox.square(
+                    dimension: 50, child: CircularProgressIndicator()),
+              ),
+            ),
+          );
+        });
+    await future;
+    Navigator.pop(dialogContext);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Drawer(
+      width: MediaQuery.of(context).size.width * 0.7,
+      backgroundColor: ThemeUtils.neumorphismColor,
+      child: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            DrawerHeader(
+              margin: const EdgeInsets.only(bottom: 20.0),
+              child: NeumorphicText(
+                '쿼 들',
+                style: const NeumorphicStyle(depth: 2.0, intensity: 1.0),
+                textStyle: NeumorphicTextStyle(
+                    fontSize: 60.0,
+                    fontWeight: FontWeight.bold,
+                    letterSpacing: 2.0),
+                textAlign: TextAlign.center,
+              ),
+            ),
+            NeumorphicButton(
+              style: const NeumorphicStyle(depth: 2.0, intensity: 1.0),
+              padding: const EdgeInsets.symmetric(vertical: 16.0),
+              onPressed: () => Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => const NameScreen())),
+              child: const Text(
+                '이름변경',
+                style: TextStyle(
+                    color: ThemeUtils.titleColor,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20.0,
+                    letterSpacing: 1.0),
+                textAlign: TextAlign.center,
+              ),
+            ),
+            const SizedBox(height: 20.0),
+            NeumorphicButton(
+              style: const NeumorphicStyle(depth: 2.0, intensity: 1.0),
+              padding: const EdgeInsets.symmetric(vertical: 16.0),
+              onPressed: () async {
+                _showLoading(context, context.read<AuthProvider>().logout());
+              },
+              child: const Text(
+                '로그아웃',
+                style: TextStyle(
+                    color: ThemeUtils.titleColor,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20.0,
+                    letterSpacing: 1.0),
+                textAlign: TextAlign.center,
+              ),
+            ),
+            const SizedBox(height: 20.0),
+            NeumorphicButton(
+              style: const NeumorphicStyle(depth: 2.0, intensity: 1.0),
+              padding: const EdgeInsets.symmetric(vertical: 16.0),
+              onPressed: () async {
+                final result = await showDialog<bool>(
+                    context: context,
+                    barrierDismissible: false,
+                    builder: (_) => Dialog(
+                        backgroundColor: ThemeUtils.neumorphismColor,
+                        child: Padding(
+                          padding: const EdgeInsets.all(20.0),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              const Text(
+                                '회원 탈퇴 시 모든 기록이 사라집니다. 탈퇴하시겠습니까?',
+                                style: TextStyle(color: ThemeUtils.titleColor),
+                              ),
+                              const SizedBox(height: 20.0),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  NeumorphicButton(
+                                      style: const NeumorphicStyle(
+                                          depth: 2, intensity: 1.0),
+                                      onPressed: () =>
+                                          Navigator.pop(context, false),
+                                      child: Container(
+                                          width: 50,
+                                          height: 20,
+                                          alignment: Alignment.center,
+                                          child: const Text(
+                                            '아니오',
+                                            style: TextStyle(
+                                                color: Colors.red,
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 16),
+                                          ))),
+                                  const SizedBox(width: 10),
+                                  NeumorphicButton(
+                                      style: const NeumorphicStyle(
+                                          depth: 2, intensity: 1.0),
+                                      onPressed: () =>
+                                          Navigator.pop(context, true),
+                                      child: Container(
+                                          width: 50,
+                                          height: 20,
+                                          alignment: Alignment.center,
+                                          child: const Text(
+                                            '예',
+                                            style: TextStyle(
+                                                color:
+                                                    ThemeUtils.highlightColor,
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 16),
+                                          ))),
+                                ],
+                              )
+                            ],
+                          ),
+                        )));
+                if (result == true) {
+                  _showLoading(
+                      context, context.read<AuthProvider>().withdrawal());
+                }
+              },
+              child: const Text(
+                '회원탈퇴',
+                style: TextStyle(
+                    color: ThemeUtils.titleColor,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20.0,
+                    letterSpacing: 1.0),
+                textAlign: TextAlign.center,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
 
@@ -136,7 +303,7 @@ class _Record extends StatelessWidget {
         children: [
           NeumorphicText(
             GameUtils.getModeText(mode),
-            style: NeumorphicStyle(
+            style: const NeumorphicStyle(
               depth: 2.0,
               intensity: 1.0,
             ),

@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -45,16 +46,19 @@ class MyApp extends StatelessWidget {
         lightSource: LightSource.topLeft,
         intensity: 0.8,
       ),
-      home: Consumer<AuthProvider>(
-        builder: (context, value, child) => AnimatedSwitcher(
-          duration: const Duration(microseconds: 300),
-          child: value.user != null
-              ? Hive.box('setting').get('username') != null
-                  ? const MainScreen()
-                  : const NameScreen()
-              : const SignInScreen(),
-        ),
-      ),
+      home: Selector<AuthProvider, User?>(
+          selector: (_, provider) => provider.user,
+          builder: (context, user, child) {
+            log(user.toString());
+            return AnimatedSwitcher(
+              duration: const Duration(microseconds: 300),
+              child: user != null
+                  ? Hive.box('setting').get('username') != null
+                      ? const MainScreen()
+                      : const NameScreen()
+                  : const SignInScreen(),
+            );
+          }),
     );
   }
 }

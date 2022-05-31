@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:kwordle/models/user.dart' as Model;
 import 'package:kwordle/utils/game_utils.dart';
 
@@ -37,6 +38,9 @@ class AuthProvider with ChangeNotifier {
         ));
         if (userCredential.additionalUserInfo?.isNewUser ?? true) {
           createUserData(userCredential.user);
+        } else {
+          await Hive.box('setting')
+              .put('username', userCredential.user?.displayName);
         }
         return userCredential.user != null ? 1 : -1;
       } else {
@@ -85,8 +89,20 @@ class AuthProvider with ChangeNotifier {
     });
   }
 
-  void logout() {
-    _googleSignIn.disconnect();
-    FirebaseAuth.instance.signOut();
+  Future logout() async {
+    await Hive.box('setting').delete('username');
+    await _googleSignIn.disconnect();
+    await FirebaseAuth.instance.signOut();
+  }
+
+  Future withdrawal() async {
+    if (user == null) return;
+    await userRef.child(user!.uid).remove();
+    final googleAccount = await _googleSignIn.signInSilently();
+    final googleAuth = await googleAccount?.authentication;
+    await user!.reauthenticateWithCredential(GoogleAuthProvider.credential(
+        idToken: googleAuth?.idToken, accessToken: googleAuth?.accessToken));
+    await user!.delete();
+    await logout();
   }
 }

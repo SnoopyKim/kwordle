@@ -6,6 +6,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:hive/hive.dart';
 import 'package:kwordle/providers/auth_provider.dart';
+import 'package:kwordle/ui/screens/main_screen.dart';
 import 'package:kwordle/utils/theme_utils.dart';
 import 'package:provider/provider.dart';
 
@@ -32,18 +33,47 @@ class _NameScreenState extends State<NameScreen> {
   }
 
   Future<void> saveUserName(String name) async {
+    FocusScope.of(context).unfocus();
     if (_initialName != name) {
       setState(() {
         isBusy = true;
       });
       await Hive.box('setting').put('username', name);
       await _authProvider.updateUserName(name);
+      if (mounted) {
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(builder: (_) => const MainScreen()),
+            (_) => false);
+      }
+    } else {
+      await Hive.box('setting').put('username', name);
+      Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(builder: (_) => const MainScreen()), (_) => false);
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: NeumorphicAppBar(
+        automaticallyImplyLeading: false,
+        leading: Navigator.of(context).canPop()
+            ? SizedBox(
+                width: 56,
+                height: 56,
+                child: NeumorphicButton(
+                  style: const NeumorphicStyle(depth: 4.0, intensity: 0.8),
+                  padding: const EdgeInsets.all(0.0),
+                  onPressed: () => Navigator.of(context).pop(),
+                  child: const Icon(
+                    Icons.arrow_back,
+                    color: ThemeUtils.highlightColor,
+                    size: 26.0,
+                  ),
+                ),
+              )
+            : null,
+      ),
       body: SafeArea(
           child: Center(
         child: Padding(
@@ -98,8 +128,8 @@ class _NameScreenState extends State<NameScreen> {
                               height: 20,
                               width: 20,
                               child: CircularProgressIndicator())
-                          : const Text(
-                              '확인',
+                          : Text(
+                              Navigator.of(context).canPop() ? '변경' : '확인',
                               style: TextStyle(
                                   color: ThemeUtils.highlightColor,
                                   fontSize: 18.0,
