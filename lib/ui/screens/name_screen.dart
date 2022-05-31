@@ -42,13 +42,12 @@ class _NameScreenState extends State<NameScreen> {
       await _authProvider.updateUserName(name);
       if (mounted) {
         Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(builder: (_) => const MainScreen()),
-            (_) => false);
+            MaterialPageRoute(builder: (_) => MainScreen()), (_) => false);
       }
     } else {
       await Hive.box('setting').put('username', name);
       Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(builder: (_) => const MainScreen()), (_) => false);
+          MaterialPageRoute(builder: (_) => MainScreen()), (_) => false);
     }
   }
 

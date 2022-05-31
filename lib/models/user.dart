@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import 'package:kwordle/utils/game_utils.dart';
 
 class User {
@@ -80,19 +82,19 @@ class User {
         if (fiveCount == 0) {
           return 0;
         } else {
-          return (fiveClear / fiveCount * 10).floor();
+          return (math.pow(fiveClear, 2) / fiveCount * 100).floor();
         }
       case GameMode.SIX:
         if (sixCount == 0) {
           return 0;
         } else {
-          return (sixClear / sixCount * 10).floor();
+          return (math.pow(sixClear, 2) / sixCount * 100).floor();
         }
       case GameMode.SEVEN:
         if (sevenCount == 0) {
           return 0;
         } else {
-          return (sevenClear / sevenCount * 10).floor();
+          return (math.pow(sevenClear, 2) / sevenCount * 100).floor();
         }
       default:
         return 0;

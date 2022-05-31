@@ -5,8 +5,9 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:kwordle/models/user.dart' as Model;
+import 'package:kwordle/models/user.dart' as model;
 import 'package:kwordle/utils/game_utils.dart';
+import 'package:kwordle/utils/hive_utils.dart';
 
 class AuthProvider with ChangeNotifier {
   User? user;
@@ -14,10 +15,11 @@ class AuthProvider with ChangeNotifier {
   DatabaseReference userRef = FirebaseDatabase.instance.ref('users');
 
   void listen() {
-    FirebaseAuth.instance.userChanges().listen((user) {
+    FirebaseAuth.instance.userChanges().listen((user) async {
       if (user == null) {
         log('No user data');
       } else {
+        await HiveUtils().configBox(user.uid);
         log('User signed in!');
       }
       this.user = user;
@@ -63,7 +65,7 @@ class AuthProvider with ChangeNotifier {
 
   createUserData(User? user) async {
     if (user == null) return;
-    userRef.child(user.uid).set(Model.User.register(
+    userRef.child(user.uid).set(model.User.register(
             email: user.email ?? '', name: user.displayName ?? '')
         .toMap()
       ..remove('uid'));
@@ -98,6 +100,7 @@ class AuthProvider with ChangeNotifier {
   Future withdrawal() async {
     if (user == null) return;
     await userRef.child(user!.uid).remove();
+    await HiveUtils().clearBox();
     final googleAccount = await _googleSignIn.signInSilently();
     final googleAuth = await googleAccount?.authentication;
     await user!.reauthenticateWithCredential(GoogleAuthProvider.credential(

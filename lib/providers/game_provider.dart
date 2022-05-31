@@ -8,6 +8,7 @@ import 'package:kwordle/models/history.dart';
 import 'package:kwordle/providers/auth_provider.dart';
 import 'package:kwordle/ui/dialogs/clear.dart';
 import 'package:kwordle/utils/game_utils.dart';
+import 'package:kwordle/utils/hive_utils.dart';
 import 'package:kwordle/word_data/five.dart';
 import 'package:kwordle/word_data/seven.dart';
 import 'package:kwordle/word_data/six.dart';
@@ -18,7 +19,7 @@ class GameProvider with ChangeNotifier {
   late List<String> WORD_POOL;
   late int wordIndex;
   late String word;
-  Box<History> get _historyBox => Hive.box<History>(GameUtils.getBoxName(mode));
+  Box<History> get _historyBox => HiveUtils().getBox(mode);
 
   GameProvider(this.mode) {
     switch (mode) {

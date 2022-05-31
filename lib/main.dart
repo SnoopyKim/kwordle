@@ -10,6 +10,7 @@ import 'package:kwordle/models/history.dart';
 import 'package:kwordle/providers/auth_provider.dart';
 import 'package:kwordle/ui/screens/main_screen.dart';
 import 'package:kwordle/ui/screens/sign_in_screen.dart';
+import 'package:kwordle/utils/hive_utils.dart';
 import 'package:kwordle/utils/theme_utils.dart';
 import 'package:provider/provider.dart';
 
@@ -23,8 +24,7 @@ Future<void> main() async {
     DeviceOrientation.portraitDown,
   ]);
   await Hive.initFlutter();
-  await Hive.openBox('setting');
-  Hive.registerAdapter(HistoryAdapter());
+  await HiveUtils().init();
   await Hive.openBox<History>('history_five');
   await Hive.openBox<History>('history_six');
   await Hive.openBox<History>('history_seven');

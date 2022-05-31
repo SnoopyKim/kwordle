@@ -117,12 +117,12 @@ class _Record extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  '시도횟수 : $count회',
+                  '정답개수 : $clear회',
                   style: const TextStyle(color: ThemeUtils.titleColor),
                 ),
                 const SizedBox(height: 10.0),
                 Text(
-                  '정답개수 : $clear회',
+                  '시도횟수 : $count회',
                   style: const TextStyle(color: ThemeUtils.titleColor),
                 ),
               ],

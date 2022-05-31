@@ -10,6 +10,7 @@ import 'package:kwordle/models/history.dart';
 import 'package:kwordle/models/word.dart';
 import 'package:kwordle/providers/auth_provider.dart';
 import 'package:kwordle/utils/game_utils.dart';
+import 'package:kwordle/utils/hive_utils.dart';
 import 'package:kwordle/utils/theme_utils.dart';
 import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
@@ -37,7 +38,7 @@ class _ClearDialogState extends State<ClearDialog> {
   @override
   void initState() {
     super.initState();
-    final box = Hive.box<History>(GameUtils.getBoxName(widget.mode));
+    final box = HiveUtils().getBox(widget.mode);
     int count = box.values.fold<int>(
         0, (previousValue, element) => previousValue + element.history.length);
     context

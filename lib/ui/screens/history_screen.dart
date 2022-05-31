@@ -9,6 +9,7 @@ import 'package:hive/hive.dart';
 import 'package:kwordle/models/history.dart';
 import 'package:kwordle/ui/letter/simple_letter_view.dart';
 import 'package:kwordle/utils/game_utils.dart';
+import 'package:kwordle/utils/hive_utils.dart';
 import 'package:kwordle/utils/theme_utils.dart';
 import 'package:intl/intl.dart';
 
@@ -22,13 +23,13 @@ class HistoryScreen extends StatefulWidget {
 class _HistoryScreenState extends State<HistoryScreen> {
   final List<int> modes = [GameMode.FIVE, GameMode.SIX, GameMode.SEVEN];
   int selectedMode = GameMode.FIVE;
-  List<History> historyList =
-      Hive.box<History>(GameUtils.getBoxName(GameMode.FIVE))
-          .values
-          .where((history) => history.clearTime != null)
-          .toList()
-          .reversed
-          .toList();
+  List<History> historyList = HiveUtils()
+      .getBox(GameMode.FIVE)
+      .values
+      .where((history) => history.clearTime != null)
+      .toList()
+      .reversed
+      .toList();
 
   @override
   Widget build(BuildContext context) {
@@ -76,13 +77,13 @@ class _HistoryScreenState extends State<HistoryScreen> {
                 selectedIndex: modes.indexOf(selectedMode),
                 onChanged: (idx) => setState(() {
                   selectedMode = modes[idx];
-                  historyList =
-                      Hive.box<History>(GameUtils.getBoxName(selectedMode))
-                          .values
-                          .where((history) => history.clearTime != null)
-                          .toList()
-                          .reversed
-                          .toList();
+                  historyList = HiveUtils()
+                      .getBox(selectedMode)
+                      .values
+                      .where((history) => history.clearTime != null)
+                      .toList()
+                      .reversed
+                      .toList();
                 }),
                 children: [
                   ToggleElement(

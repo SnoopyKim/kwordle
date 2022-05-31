@@ -1,8 +1,11 @@
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:kwordle/models/history.dart';
 import 'package:kwordle/providers/auth_provider.dart';
 import 'package:kwordle/ui/screens/game_screen.dart';
 import 'package:kwordle/ui/screens/rank_screen.dart';
 import 'package:kwordle/utils/game_utils.dart';
+import 'package:kwordle/utils/hive_utils.dart';
 import 'package:kwordle/utils/theme_utils.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:provider/provider.dart';
@@ -72,19 +75,22 @@ class MainScreen extends StatelessWidget {
                   margin: const EdgeInsets.only(top: 8.0, bottom: 30.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: const [
-                      Text(
-                        '김재훈',
-                        style: TextStyle(
-                            fontSize: 26.0,
-                            fontWeight: FontWeight.bold,
-                            color: ThemeUtils.titleColor),
-                        textAlign: TextAlign.center,
+                    children: [
+                      Selector<AuthProvider, String?>(
+                        selector: (_, provider) => provider.user?.displayName,
+                        builder: (context, value, child) => Text(
+                          value ?? '',
+                          style: TextStyle(
+                              fontSize: 26.0,
+                              fontWeight: FontWeight.bold,
+                              color: ThemeUtils.titleColor),
+                          textAlign: TextAlign.center,
+                        ),
                       ),
-                      SizedBox(height: 20.0),
-                      _Record(mode: GameMode.FIVE, count: 0),
-                      _Record(mode: GameMode.SIX, count: 0),
-                      _Record(mode: GameMode.SEVEN, count: 0),
+                      const SizedBox(height: 20.0),
+                      _Record(mode: GameMode.FIVE),
+                      _Record(mode: GameMode.SIX),
+                      _Record(mode: GameMode.SEVEN),
                     ],
                   ),
                 ),
@@ -315,14 +321,19 @@ class __NameContainerState extends State<_NameContainer> {
 }
 
 class _Record extends StatelessWidget {
-  const _Record({Key? key, required this.mode, required this.count})
-      : super(key: key);
+  _Record({Key? key, required this.mode})
+      : box = HiveUtils().getBox(mode),
+        super(key: key);
 
   final int mode;
-  final int count;
+  late final Box<History> box;
 
   @override
   Widget build(BuildContext context) {
+    final bool isUnsolvedExist = box.containsKey('unsolved');
+    final int clear = isUnsolvedExist ? box.length - 1 : box.length;
+    final int count = box.values.fold<int>(
+        0, (previousValue, element) => previousValue + element.history.length);
     return Container(
       height: 70,
       padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -346,12 +357,12 @@ class _Record extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                '시도횟수  :  $count회',
+                '정답개수  :  $clear회',
                 style: const TextStyle(color: ThemeUtils.contentColor),
               ),
               const SizedBox(height: 8.0),
               Text(
-                '정답개수  :  $count회',
+                '시도횟수  :  $count회',
                 style: const TextStyle(color: ThemeUtils.contentColor),
               ),
             ],
