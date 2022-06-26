@@ -7,8 +7,7 @@ class GameMode {
 }
 
 class GameUtils {
-  static List<Map<String, dynamic>> mergeHistory(
-      List<List<Map<String, dynamic>>> history) {
+  static List<Map<String, dynamic>> mergeHistory(List<List<Map<String, dynamic>>> history) {
     return [
       ...history.map((e) => [...e.map((m) => Map<String, dynamic>.from(m))])
     ].fold([], (result, letters) {
@@ -24,11 +23,9 @@ class GameUtils {
     });
   }
 
-  static List<Map<String, dynamic>> validateInput(
-      String word, List<String> input) {
+  static List<Map<String, dynamic>> validateInput(String word, List<String> input) {
     // String copyWord = word;
-    List<Map<String, dynamic>> result =
-        input.map((v) => {'letter': v, 'result': 0}).toList();
+    List<Map<String, dynamic>> result = input.map((v) => {'letter': v, 'result': 0}).toList();
     for (int i = 0; i < result.length; i++) {
       if (word.indexOf(result[i]['letter']) == i) {
         result[i]['result'] = 2;
@@ -42,7 +39,6 @@ class GameUtils {
         word = '${word.substring(0, index)}X${word.substring(index + 1)}';
       }
     }
-    log(word);
     return result;
   }
 

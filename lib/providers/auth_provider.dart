@@ -17,10 +17,8 @@ class AuthProvider with ChangeNotifier {
   void listen() {
     FirebaseAuth.instance.userChanges().listen((user) async {
       if (user == null) {
-        log('No user data');
       } else {
         await HiveUtils().configBox(user.uid);
-        log('User signed in!');
       }
       this.user = user;
       notifyListeners();
@@ -33,16 +31,15 @@ class AuthProvider with ChangeNotifier {
       final googleSignInAccount = await _googleSignIn.signIn();
       if (googleSignInAccount != null) {
         final googleAuthentication = await googleSignInAccount.authentication;
-        final userCredential = await FirebaseAuth.instance
-            .signInWithCredential(GoogleAuthProvider.credential(
+        final userCredential =
+            await FirebaseAuth.instance.signInWithCredential(GoogleAuthProvider.credential(
           accessToken: googleAuthentication.accessToken,
           idToken: googleAuthentication.idToken,
         ));
         if (userCredential.additionalUserInfo?.isNewUser ?? true) {
           createUserData(userCredential.user);
         } else {
-          await Hive.box('setting')
-              .put('username', userCredential.user?.displayName);
+          await Hive.box('setting').put('username', userCredential.user?.displayName);
         }
         return userCredential.user != null ? 1 : -1;
       } else {
@@ -58,17 +55,15 @@ class AuthProvider with ChangeNotifier {
           return -1;
       }
     } catch (err) {
-      log('[GOOGLE SIGN IN ERROR]\n$err');
       return -1;
     }
   }
 
   createUserData(User? user) async {
     if (user == null) return;
-    userRef.child(user.uid).set(model.User.register(
-            email: user.email ?? '', name: user.displayName ?? '')
-        .toMap()
-      ..remove('uid'));
+    userRef.child(user.uid).set(
+        model.User.register(email: user.email ?? '', name: user.displayName ?? '').toMap()
+          ..remove('uid'));
   }
 
   Future<void> _updateUserData(String uid, Map<String, dynamic> data) async {

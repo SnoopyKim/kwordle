@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:kwordle/providers/auth_provider.dart';
 import 'package:kwordle/utils/theme_utils.dart';
@@ -12,18 +11,16 @@ class EndDrawer extends StatelessWidget {
 
   _showLoading(BuildContext context, Future future) async {
     late BuildContext dialogContext;
-    showDialog(
+    showGeneralDialog(
         context: context,
         barrierDismissible: false,
-        builder: (context) {
+        barrierColor: Colors.black12.withOpacity(0.6),
+        pageBuilder: (_, __, ___) {
           dialogContext = context;
           return WillPopScope(
             onWillPop: () => Future.value(false),
-            child: const Dialog(
-              backgroundColor: Colors.transparent,
-              child: Center(
-                child: SizedBox.square(dimension: 50, child: CircularProgressIndicator()),
-              ),
+            child: const Center(
+              child: SizedBox.square(dimension: 50, child: CircularProgressIndicator()),
             ),
           );
         });

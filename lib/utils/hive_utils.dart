@@ -19,7 +19,6 @@ class HiveUtils {
   }
 
   configBox(String uid) async {
-    log('Configure boxes with $uid');
     fiveBox = await Hive.openBox<History>('${uid}_five');
     sixBox = await Hive.openBox<History>('${uid}_six');
     sevenBox = await Hive.openBox<History>('${uid}_seven');

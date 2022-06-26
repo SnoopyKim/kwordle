@@ -7,11 +7,9 @@ import 'package:kwordle/ui/screens/rank_screen.dart';
 import 'package:kwordle/utils/game_utils.dart';
 import 'package:kwordle/utils/hive_utils.dart';
 import 'package:kwordle/utils/theme_utils.dart';
-import 'package:package_info_plus/package_info_plus.dart';
 import 'package:provider/provider.dart';
 
 import 'end_drawer.dart';
-import 'name_screen.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({Key? key}) : super(key: key);

@@ -31,7 +31,6 @@ class _HistoryScreenState extends State<HistoryScreen> {
   @override
   Widget build(BuildContext context) {
     double width = min(MediaQuery.of(context).size.width, 420);
-    log(width.toString());
     double size = (width - 48) / 3;
     return Scaffold(
       body: SafeArea(
@@ -85,16 +84,13 @@ class _HistoryScreenState extends State<HistoryScreen> {
                 children: [
                   ToggleElement(
                       background: const _TabText(GameMode.FIVE),
-                      foreground:
-                          const _TabText(GameMode.FIVE, isSelected: true)),
+                      foreground: const _TabText(GameMode.FIVE, isSelected: true)),
                   ToggleElement(
                       background: const _TabText(GameMode.SIX),
-                      foreground:
-                          const _TabText(GameMode.SIX, isSelected: true)),
+                      foreground: const _TabText(GameMode.SIX, isSelected: true)),
                   ToggleElement(
                       background: const _TabText(GameMode.SEVEN),
-                      foreground:
-                          const _TabText(GameMode.SEVEN, isSelected: true)),
+                      foreground: const _TabText(GameMode.SEVEN, isSelected: true)),
                 ],
                 thumb: Container(),
               ),
@@ -106,8 +102,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                     ? ListView.separated(
                         padding: const EdgeInsets.all(24.0),
                         itemBuilder: (_, i) => _HistoryCard(historyList[i]),
-                        separatorBuilder: (_, i) =>
-                            const SizedBox(height: 20.0),
+                        separatorBuilder: (_, i) => const SizedBox(height: 20.0),
                         itemCount: historyList.length)
                     : Center(
                         child: Column(
@@ -115,14 +110,12 @@ class _HistoryScreenState extends State<HistoryScreen> {
                           children: [
                             NeumorphicIcon(
                               Icons.close,
-                              style: const NeumorphicStyle(
-                                  depth: 2.0, intensity: 1.0),
+                              style: const NeumorphicStyle(depth: 2.0, intensity: 1.0),
                               size: 150,
                             ),
                             NeumorphicText(
                               '기록 없음',
-                              style: const NeumorphicStyle(
-                                  depth: 1.0, intensity: 1.0),
+                              style: const NeumorphicStyle(depth: 1.0, intensity: 1.0),
                               textStyle: NeumorphicTextStyle(
                                 fontSize: 30.0,
                                 fontWeight: FontWeight.bold,
@@ -184,21 +177,17 @@ class _HistoryCard extends StatelessWidget {
                 Text(
                   _history.word,
                   style: const TextStyle(
-                      color: ThemeUtils.titleColor,
-                      fontSize: 20.0,
-                      fontWeight: FontWeight.bold),
+                      color: ThemeUtils.titleColor, fontSize: 20.0, fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 20),
                 Text(
                   _history.definition,
-                  style: const TextStyle(
-                      color: ThemeUtils.contentColor, fontSize: 14.0),
+                  style: const TextStyle(color: ThemeUtils.contentColor, fontSize: 14.0),
                 ),
                 const SizedBox(height: 20),
                 Text(
                   DateFormat('yyyy-MM-dd').format(_history.clearTime!),
-                  style: const TextStyle(
-                      color: ThemeUtils.contentColor, fontSize: 12.0),
+                  style: const TextStyle(color: ThemeUtils.contentColor, fontSize: 12.0),
                 ),
               ],
             ),

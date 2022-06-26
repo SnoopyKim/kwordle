@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:kwordle/providers/auth_provider.dart';
 import 'package:kwordle/ui/dialogs/auth.dart';
