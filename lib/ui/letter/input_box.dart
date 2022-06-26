@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kwordle/utils/theme_utils.dart';
 
 class InputBox extends StatefulWidget {
   const InputBox({Key? key, required this.size, this.letter}) : super(key: key);
@@ -31,7 +32,9 @@ class _InputBoxState extends State<InputBox>
   @override
   void didUpdateWidget(covariant InputBox oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (widget.letter != null && oldWidget.letter == null) {
+    bool isEntered = widget.letter != null && oldWidget.letter == null;
+    bool isErased = widget.letter == null && oldWidget.letter != null;
+    if (isEntered || isErased) {
       _scaleAnim.forward().then((value) {
         _scaleAnim.reverse();
       });
@@ -45,14 +48,13 @@ class _InputBoxState extends State<InputBox>
       child: Container(
         width: widget.size,
         height: widget.size,
-        margin: const EdgeInsets.all(3.0),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: ThemeUtils.backgroundColor,
           borderRadius: BorderRadius.circular(5.0),
           border: Border.all(
               color: widget.letter != null
-                  ? Colors.black
-                  : const Color(0xFFCCCCCC),
+                  ? ThemeUtils.titleColor
+                  : ThemeUtils.contentColor,
               width: 2.0),
         ),
         alignment: Alignment.center,
@@ -61,7 +63,7 @@ class _InputBoxState extends State<InputBox>
           style: const TextStyle(
             fontSize: 20.0,
             fontWeight: FontWeight.bold,
-            color: Colors.black,
+            color: ThemeUtils.titleColor,
           ),
         ),
       ),

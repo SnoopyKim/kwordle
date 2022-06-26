@@ -4,7 +4,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:kwordle/models/user.dart' as model;
 import 'package:kwordle/utils/game_utils.dart';
+import 'package:kwordle/utils/hive_utils.dart';
 
 class AuthProvider with ChangeNotifier {
   User? user;
@@ -12,10 +15,11 @@ class AuthProvider with ChangeNotifier {
   DatabaseReference userRef = FirebaseDatabase.instance.ref('users');
 
   void listen() {
-    FirebaseAuth.instance.userChanges().listen((user) {
+    FirebaseAuth.instance.userChanges().listen((user) async {
       if (user == null) {
         log('No user data');
       } else {
+        await HiveUtils().configBox(user.uid);
         log('User signed in!');
       }
       this.user = user;
@@ -36,6 +40,9 @@ class AuthProvider with ChangeNotifier {
         ));
         if (userCredential.additionalUserInfo?.isNewUser ?? true) {
           createUserData(userCredential.user);
+        } else {
+          await Hive.box('setting')
+              .put('username', userCredential.user?.displayName);
         }
         return userCredential.user != null ? 1 : -1;
       } else {
@@ -58,28 +65,48 @@ class AuthProvider with ChangeNotifier {
 
   createUserData(User? user) async {
     if (user == null) return;
-    userRef.child(user.uid).set({
-      'email': user.email,
-      'name': user.displayName,
-      'five': 0,
-      'six': 0,
-      'seven': 0,
-    });
+    userRef.child(user.uid).set(model.User.register(
+            email: user.email ?? '', name: user.displayName ?? '')
+        .toMap()
+      ..remove('uid'));
   }
 
-  _updateUserData(String uid, Map<String, dynamic> data) async {
+  Future<void> _updateUserData(String uid, Map<String, dynamic> data) async {
     await userRef.child(uid).update(data);
   }
 
-  updateUserName(String name) async {
+  Future<void> updateUserName(String name) async {
     if (user == null) return;
     await user!.updateDisplayName(name);
     user!.reload();
     await _updateUserData(user!.uid, {'name': name});
   }
 
-  void logout() {
-    _googleSignIn.disconnect();
-    FirebaseAuth.instance.signOut();
+  Future<void> updateUserHistory(int mode, int clear, int count) async {
+    if (user == null) return;
+    String modeText = GameUtils.getModeText(mode, isEng: true);
+    await _updateUserData(user!.uid, {
+      '${modeText}Clear': clear,
+      '${modeText}Count': count,
+    });
+  }
+
+  Future logout() async {
+    await Hive.box('setting').delete('username');
+    await HiveUtils().closeBox();
+    await _googleSignIn.disconnect();
+    await FirebaseAuth.instance.signOut();
+  }
+
+  Future withdrawal() async {
+    if (user == null) return;
+    await userRef.child(user!.uid).remove();
+    await HiveUtils().clearBox();
+    final googleAccount = await _googleSignIn.signInSilently();
+    final googleAuth = await googleAccount?.authentication;
+    await user!.reauthenticateWithCredential(GoogleAuthProvider.credential(
+        idToken: googleAuth?.idToken, accessToken: googleAuth?.accessToken));
+    await user!.delete();
+    await logout();
   }
 }

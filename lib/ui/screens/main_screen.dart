@@ -1,48 +1,70 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:kwordle/models/history.dart';
 import 'package:kwordle/providers/auth_provider.dart';
-import 'package:kwordle/ui/dialogs/user.dart';
 import 'package:kwordle/ui/screens/game_screen.dart';
+import 'package:kwordle/ui/screens/rank_screen.dart';
 import 'package:kwordle/utils/game_utils.dart';
+import 'package:kwordle/utils/hive_utils.dart';
 import 'package:kwordle/utils/theme_utils.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:provider/provider.dart';
 
-class MainScreen extends StatelessWidget {
+import 'end_drawer.dart';
+import 'name_screen.dart';
+
+class MainScreen extends StatefulWidget {
   const MainScreen({Key? key}) : super(key: key);
 
   @override
+  State<MainScreen> createState() => _MainScreenState();
+}
+
+class _MainScreenState extends State<MainScreen> {
+  @override
   Widget build(BuildContext context) {
-    String userUid = context.read<AuthProvider>().user?.uid ?? '';
     return Scaffold(
         backgroundColor: ThemeUtils.neumorphismColor,
         appBar: NeumorphicAppBar(
+          automaticallyImplyLeading: false,
           title: Container(
             height: kToolbarHeight,
             alignment: Alignment.centerLeft,
-            child: Text('쿼 들',
+            child: const Text('쿼 들',
                 style: TextStyle(
                   fontSize: 36.0,
                   fontWeight: FontWeight.bold,
                   color: ThemeUtils.titleColor,
                 )),
           ),
-          // centerTitle: true,
+          actionSpacing: 20,
           actions: [
             NeumorphicButton(
-              style: NeumorphicStyle(depth: 4.0, intensity: 0.8),
+              style: const NeumorphicStyle(depth: 4.0, intensity: 0.8),
               padding: EdgeInsets.zero,
-              child: Icon(
-                Icons.person,
+              child: const Icon(
+                Icons.leaderboard_rounded,
                 size: 26.0,
                 color: ThemeUtils.highlightColor,
               ),
-              onPressed: () => showDialog(
-                  context: context,
-                  builder: (_) => UserDialog(uid: userUid),
-                  barrierDismissible: false),
-            )
+              onPressed: () =>
+                  Navigator.push(context, MaterialPageRoute(builder: (_) => const RankScreen())),
+            ),
+            Builder(builder: (context) {
+              return NeumorphicButton(
+                  style: const NeumorphicStyle(depth: 4.0, intensity: 0.8),
+                  padding: EdgeInsets.zero,
+                  child: const Icon(
+                    Icons.settings_rounded,
+                    size: 26.0,
+                    color: ThemeUtils.highlightColor,
+                  ),
+                  onPressed: () => Scaffold.of(context).openEndDrawer());
+            })
           ],
         ),
+        endDrawerEnableOpenDragGesture: false,
+        endDrawer: const EndDrawer(),
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 30.0),
           child: Column(
@@ -51,42 +73,42 @@ class MainScreen extends StatelessWidget {
             children: [
               Expanded(
                 child: Neumorphic(
-                  style: NeumorphicStyle(
-                      depth: -5.0,
-                      border: NeumorphicBorder(color: ThemeUtils.contentColor)),
+                  style: const NeumorphicStyle(
+                      depth: -5.0, border: NeumorphicBorder(color: ThemeUtils.contentColor)),
                   padding: const EdgeInsets.all(30.0),
                   margin: const EdgeInsets.only(top: 8.0, bottom: 30.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      Text(
-                        '김재훈',
-                        style: TextStyle(
-                            fontSize: 26.0,
-                            fontWeight: FontWeight.bold,
-                            color: ThemeUtils.titleColor),
-                        textAlign: TextAlign.center,
+                      Selector<AuthProvider, String?>(
+                        selector: (_, provider) => provider.user?.displayName,
+                        builder: (context, value, child) => Text(
+                          value ?? '',
+                          style: const TextStyle(
+                              fontSize: 26.0,
+                              fontWeight: FontWeight.bold,
+                              color: ThemeUtils.titleColor),
+                          textAlign: TextAlign.center,
+                        ),
                       ),
                       const SizedBox(height: 20.0),
-                      _Record(mode: GameMode.FIVE, count: 0),
-                      _Record(mode: GameMode.SIX, count: 0),
-                      _Record(mode: GameMode.SEVEN, count: 0),
+                      _Record(mode: GameMode.FIVE),
+                      _Record(mode: GameMode.SIX),
+                      _Record(mode: GameMode.SEVEN),
                     ],
                   ),
                 ),
               ),
               const Text('플레이',
                   style: TextStyle(
-                      fontSize: 26.0,
-                      fontWeight: FontWeight.bold,
-                      color: ThemeUtils.titleColor)),
+                      fontSize: 26.0, fontWeight: FontWeight.bold, color: ThemeUtils.titleColor)),
               const SizedBox(height: 20.0),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: const [
-                  _PlayButton(GameMode.FIVE),
-                  _PlayButton(GameMode.SIX),
-                  _PlayButton(GameMode.SEVEN),
+                children: [
+                  _PlayButton(GameMode.FIVE, refresh: refresh),
+                  _PlayButton(GameMode.SIX, refresh: refresh),
+                  _PlayButton(GameMode.SEVEN, refresh: refresh),
                 ],
               ),
               const SizedBox(height: 30.0)
@@ -94,10 +116,12 @@ class MainScreen extends StatelessWidget {
           ),
         ));
   }
+
+  void refresh() => setState(() {});
 }
 
 class _NameContainer extends StatefulWidget {
-  _NameContainer({Key? key}) : super(key: key);
+  const _NameContainer({Key? key}) : super(key: key);
 
   @override
   State<_NameContainer> createState() => __NameContainerState();
@@ -111,14 +135,19 @@ class __NameContainerState extends State<_NameContainer> {
 }
 
 class _Record extends StatelessWidget {
-  const _Record({Key? key, required this.mode, required this.count})
-      : super(key: key);
+  _Record({Key? key, required this.mode})
+      : box = HiveUtils().getBox(mode),
+        super(key: key);
 
   final int mode;
-  final int count;
+  late final Box<History> box;
 
   @override
   Widget build(BuildContext context) {
+    final bool isUnsolvedExist = box.containsKey('unsolved');
+    final int clear = isUnsolvedExist ? box.length - 1 : box.length;
+    final int count =
+        box.values.fold<int>(0, (previousValue, element) => previousValue + element.history.length);
     return Container(
       height: 70,
       padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -128,7 +157,7 @@ class _Record extends StatelessWidget {
         children: [
           NeumorphicText(
             GameUtils.getModeText(mode),
-            style: NeumorphicStyle(
+            style: const NeumorphicStyle(
               depth: 2.0,
               intensity: 1.0,
             ),
@@ -142,12 +171,12 @@ class _Record extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                '시도횟수  :  $count회',
+                '정답개수  :  $clear회',
                 style: const TextStyle(color: ThemeUtils.contentColor),
               ),
               const SizedBox(height: 8.0),
               Text(
-                '정답개수  :  $count회',
+                '시도횟수  :  $count회',
                 style: const TextStyle(color: ThemeUtils.contentColor),
               ),
             ],
@@ -162,9 +191,11 @@ class _PlayButton extends StatelessWidget {
   const _PlayButton(
     this.mode, {
     Key? key,
+    required this.refresh,
   }) : super(key: key);
 
   final int mode;
+  final Function refresh;
 
   @override
   Widget build(BuildContext context) {
@@ -189,7 +220,7 @@ class _PlayButton extends StatelessWidget {
           context,
           MaterialPageRoute(
             builder: (context) => GameScreen(mode: mode),
-          )),
+          )).then((value) => refresh()),
     );
   }
 }

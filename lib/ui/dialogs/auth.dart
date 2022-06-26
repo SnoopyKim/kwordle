@@ -1,4 +1,5 @@
-import 'package:flutter/material.dart';
+import 'package:flutter_neumorphic/flutter_neumorphic.dart';
+import 'package:kwordle/utils/theme_utils.dart';
 
 class AuthDialog extends StatelessWidget {
   const AuthDialog({Key? key, required this.code}) : super(key: key);
@@ -19,12 +20,32 @@ class AuthDialog extends StatelessWidget {
     }
 
     return AlertDialog(
-      title: Text('로그인 실패'),
-      content: Text(message),
-      actionsAlignment: MainAxisAlignment.center,
+      backgroundColor: ThemeUtils.neumorphismColor,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
+      title: const Text(
+        '로그인 실패',
+        style: TextStyle(color: ThemeUtils.titleColor),
+      ),
+      content: Text(
+        message,
+        style: const TextStyle(color: ThemeUtils.contentColor),
+      ),
+      contentPadding: const EdgeInsets.fromLTRB(24.0, 20.0, 24.0, 10.0),
+      actionsAlignment: MainAxisAlignment.end,
+      actionsPadding: const EdgeInsets.only(bottom: 10.0, right: 20.0),
       actions: [
-        TextButton(
-            onPressed: () => Navigator.of(context).pop(), child: Text('확인'))
+        NeumorphicButton(
+          style: const NeumorphicStyle(depth: 3.0, intensity: 1.0),
+          onPressed: () => Navigator.of(context).pop(),
+          child: const Text(
+            '확인',
+            style: TextStyle(
+                color: ThemeUtils.highlightColor,
+                fontWeight: FontWeight.bold,
+                fontSize: 16.0,
+                letterSpacing: 2.0),
+          ),
+        )
       ],
     );
   }

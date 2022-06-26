@@ -5,7 +5,7 @@ class ThemeUtils {
   static const Color neumorphismColor = Color(0xffDFE9FE);
   static const Color highlightColor = Color(0xff83A0F0);
   static const Color titleColor = Color(0xff6B748F);
-  static const Color contentColor = Color(0xffB1BBD1);
+  static const Color contentColor = Color(0xff9FA8BC);
 
   static Color? getResultColor(int? result) {
     switch (result) {

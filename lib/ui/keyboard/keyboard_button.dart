@@ -23,7 +23,7 @@ class _KeyboardButtonState extends State<KeyboardButton> {
   @override
   Widget build(BuildContext context) {
     final bgColor =
-        ThemeUtils.getResultColor(widget.result) ?? Colors.grey.shade200;
+        ThemeUtils.getResultColor(widget.result) ?? ThemeUtils.backgroundColor;
     final void Function(String) onPressKey =
         context.select((GameProvider provider) => provider.input);
     return GestureDetector(
@@ -39,18 +39,19 @@ class _KeyboardButtonState extends State<KeyboardButton> {
       },
       child: Container(
         decoration: BoxDecoration(
-            color: isTapDown
-                ? HSLColor.fromColor(bgColor).withLightness(0.4).toColor()
-                : bgColor,
-            borderRadius: BorderRadius.circular(5.0)),
-        width: (MediaQuery.of(context).size.width - 40 - 8 * 8) / 9,
+            color: isTapDown ? ThemeUtils.neumorphismColor : bgColor,
+            borderRadius: BorderRadius.circular(5.0),
+            boxShadow: kElevationToShadow[1]),
+        width: (MediaQuery.of(context).size.width - 40 - 6 * 8) / 9,
         height: 50,
         alignment: Alignment.center,
-        margin: const EdgeInsets.all(4.0),
+        margin: const EdgeInsets.all(3.0),
         child: Text(
           widget.value,
           style: TextStyle(
-              color: widget.result != null ? Colors.white : null,
+              color: widget.result != null
+                  ? ThemeUtils.backgroundColor
+                  : ThemeUtils.titleColor,
               fontWeight: FontWeight.bold),
         ),
       ),
